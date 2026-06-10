@@ -1,0 +1,6 @@
+{
+  "name": "StoryShout Limited",
+  "description": "Premium official portal for StoryShout Limited, a hybrid SaaS campaign platform and independent record label in Lagos, Nigeria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
