@@ -19,7 +19,7 @@ import {
 } from './server/db.ts';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'storyshout_super_secret_key_2026';
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 async function startServer() {
   const app = express();

@@ -76,14 +76,6 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
               >
                 {darkMode ? <Sun size={17} /> : <Moon size={17} />}
               </button>
-
-              <Link 
-                id="nav-admin" 
-                to="/admin/login" 
-                className="px-4 py-2 text-xs font-mono tracking-wider uppercase border border-brand-teal/40 hover:border-brand-teal text-brand-teal hover:bg-brand-teal/10 rounded-lg transition-all"
-              >
-                Portals
-              </Link>
             </nav>
 
             {/* Mobile menu and setting controls */}
@@ -145,13 +137,6 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                   className={`block px-3 py-2 rounded-lg text-base font-medium ${location.pathname === '/contact' ? 'text-brand-teal bg-brand-teal/5' : 'text-slate-400'}`}
                 >
                   Get In Touch
-                </Link>
-                <div className="h-px bg-slate-300 dark:bg-slate-700 my-2" />
-                <Link 
-                  to="/admin/login" 
-                  className="block px-3 py-2.5 text-center text-sm font-mono tracking-widest uppercase border border-brand-teal/50 rounded-lg text-brand-teal"
-                >
-                  Admin Portal
                 </Link>
               </div>
             </motion.div>
@@ -233,11 +218,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
               &copy; {new Date().getFullYear()} StoryShout Limited. All rights reserved. &quot;Code That Speaks. Sound That Moves.&quot;
             </p>
             <div className="flex space-x-6">
-              <Link to="/admin/login" className="hover:text-brand-teal transition-colors flex items-center space-x-1">
-                <ShieldAlert size={12} />
-                <span>Admin Login</span>
-              </Link>
-              <span>Built with React + Vite + Node & SQLite</span>
+              <span>Built with React + Vite + Node & Master Database</span>
             </div>
           </div>
         </div>
