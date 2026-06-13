@@ -110,9 +110,7 @@ export default function About() {
             <div className="md:col-span-4 shrink-0 max-w-sm mx-auto md:mx-0">
               <div className="relative rounded-2xl overflow-hidden aspect-square border border-brand-teal/30 shadow-md">
                 <img
-                    src="assets/david.png"
-                    width={60}
-                    height={50}
+                    src="/assets/david.png"
                     alt="David Ogbodu — Founder of StoryShout Limited"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
