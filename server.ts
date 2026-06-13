@@ -428,6 +428,13 @@ async function startServer() {
 
   // --- VITE DEV AND PROD MIDDLEWARE SETUP ---
 
+  // Subdomain detection middleware
+  app.use((req: any, res: any, next: any) => {
+    const host = req.headers.host || '';
+    req.subdomain = host.startsWith('label.') ? 'label' : 'main';
+    next();
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     // Development Mode
     const vite = await createViteServer({
@@ -440,7 +447,9 @@ async function startServer() {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.get('*', (req: any, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      let html = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
+      html = html.replace('</head>', `<script>window.__SUBDOMAIN__="${req.subdomain}";</script></head>`);
+      res.send(html);
     });
   }
 
