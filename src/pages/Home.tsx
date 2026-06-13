@@ -1,30 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Server, Music, Award, Users, ChevronRight, Sparkles, Send } from 'lucide-react';
+import {
+  ArrowRight, Video, Users, Wallet, Globe, ChevronRight,
+  Sparkles, Shield, TrendingUp, Play, CheckCircle
+} from 'lucide-react';
 
 const TAGLINES = [
-  "Campaigns That Convert",
-  "Music That Moves",
-  "Stories That Amplify"
+  'Monetize Your Videos.',
+  'Grow Your Audience.',
+  'Get Paid to Create.',
+];
+
+const FEATURES = [
+  {
+    icon: <Video size={24} />,
+    title: 'Video Campaign Creation',
+    desc: 'Upload your video, set a tier, and launch a campaign. StoryShout handles file conversion, S3 storage, and automatic publishing to Facebook and Instagram.',
+  },
+  {
+    icon: <Users size={24} />,
+    title: 'Tiered Supporter System',
+    desc: 'Campaigns attract supporters across STARTER, MICRO-INFLUENCER, and INFLUENCER tiers. Each tier has its own pay cycle — creating a self-sustaining coin economy.',
+  },
+  {
+    icon: <Wallet size={24} />,
+    title: 'Coin Wallet & Payouts',
+    desc: 'Deposit fiat, earn coins by supporting campaigns, and withdraw your earnings. Wallets support Stripe, PayPal, Flutterwave, and Paystack — per your currency.',
+  },
+  {
+    icon: <Globe size={24} />,
+    title: 'Multi-Platform Publishing',
+    desc: 'Campaigns publish automatically to Facebook, Instagram, WhatsApp, Snapchat, and Telegram — with real-time post insights and follower sync.',
+  },
 ];
 
 const TESTIMONIALS = [
   {
-    quote: "StoryShout's campaign management tool unlocked an 85% mobile delivery threshold for our fintech alerts across West Africa.",
-    author: "Gbenga Adebayo",
-    role: "VP of Growth, CorePay Africa"
+    quote: "StoryShout unlocked a revenue stream I didn't know existed. My campaign hit its verified target in under 48 hours and the payout was seamless.",
+    author: 'Gbenga Adebayo',
+    role: 'Content Creator, Lagos',
   },
   {
-    quote: "Working with StoryShout Records has completely shifted how my music is distributed. They treat audio like engineering.",
-    author: "David Ogbodu",
-    role: "Featured Label Artist & Founder"
+    quote: "The influencer tier system is brilliant. As a MICRO-INFLUENCER I earn coins on every campaign I support — it's genuinely passive income for what I already do.",
+    author: 'Chioma Nwosu',
+    role: 'Lifestyle Influencer, Abuja',
   },
   {
-    quote: "Their local dialect localization algorithm is unbelievably accurate. It turned standard marketing jargon into highly-engaging Lagos slang.",
-    author: "Chioma Nwosu",
-    role: "Brand Director, Savor Beverages Nigeria"
-  }
+    quote: "Multi-gateway support is a game changer. My Stripe account handles USD withdrawals while my Nigerian audience deposits via Flutterwave. Zero friction.",
+    author: 'Emeka Okafor',
+    role: 'Brand Strategist, Port Harcourt',
+  },
+];
+
+const HOW_IT_WORKS = [
+  { step: '01', title: 'Create a Campaign', text: 'Upload your video, pick a support tier, confirm compliance, and submit. Your campaign is queued for processing immediately.' },
+  { step: '02', title: 'Budget is Locked', text: 'For paid campaigns, your coin budget is held in escrow. Supporters earn from it as they engage — verified by our post-check engine.' },
+  { step: '03', title: 'Supporters Engage', text: 'Supporters post or share your content on their social accounts. StoryShout verifies the action and releases coins to their wallet.' },
+  { step: '04', title: 'Withdraw Earnings', text: 'Supporters convert earned coins to fiat and withdraw via their linked payment gateway — Stripe, PayPal, Flutterwave, or Paystack.' },
 ];
 
 export default function Home() {
@@ -33,207 +66,183 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setTaglineIndex((prev) => (prev + 1) % TAGLINES.length);
-    }, 4000);
+    }, 3500);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div id="homepage" className="overflow-hidden">
-      {/* Hero section */}
-      <section className="relative overflow-hidden pt-20 pb-20 md:py-32 bg-[#0B0C10] text-white">
+    <div className="overflow-hidden">
+
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden pt-20 pb-24 md:py-36 bg-[#0B0C10] text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(69,162,158,0.15),transparent_60%)] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-4xl mx-auto pb-12">
-            {/* Animated cycling tagline badge */}
-            <div className="inline-flex items-center space-x-2 bg-brand-teal/10 border border-brand-teal/30 px-3 py-1.5 rounded-full text-brand-teal font-mono text-xs uppercase tracking-widest mb-6">
-              <Sparkles size={14} className="animate-pulse" />
-              <span>StoryShout Limited</span>
-            </div>
 
-            {/* Cycling Title */}
-            <h1 className="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight leading-none mb-6">
-              Code That Speaks.<br />
-              <div className="text-brand-teal min-h-[50px] sm:min-h-[70px] md:min-h-[85px] mt-2 block">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={taglineIndex}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {TAGLINES[taglineIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
-            </h1>
-
-            <p className="text-slate-300 text-lg sm:text-xl font-sans max-w-2xl mx-auto mb-10 leading-relaxed">
-              We are a modern hybrid company engineering high-performance SaaS tools for campaign creators and representing raw, independent musical artists at the intersection of logic and sound.
-            </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="inline-flex items-center space-x-2 bg-brand-teal/10 border border-brand-teal/30 px-3 py-1.5 rounded-full text-brand-teal font-mono text-xs uppercase tracking-widest mb-6">
+            <Sparkles size={14} className="animate-pulse" />
+            <span>StoryShout — Now in Beta</span>
           </div>
 
-          {/* Split Call-to-Actions (SaaS vs Records Visual Pitch) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
-            {/* SaaS Pitch Card */}
-            <motion.div 
-              whileHover={{ y: -6 }}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-900 border border-brand-teal/20 p-8 shadow-2xl transition-all"
-            >
-              <div className="absolute top-0 right-0 p-8 text-brand-teal/10 group-hover:text-brand-teal/20 transition-colors">
-                <Server size={140} />
-              </div>
-              
-              <div className="relative z-10 space-y-4">
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal border border-brand-teal/30 mb-2">
-                  <Server size={24} />
-                </div>
-                <h3 className="font-display font-bold text-2xl text-white">Campaign SaaS</h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  Enterprise-grade campaign manager. Deliver SMS, WhatsApp, and email alerts with extreme precision, AI cultural-local translation, and ultra-detailed delivery diagnostics tailored for West Africa.
-                </p>
-              </div>
-
-              <div className="relative z-10 pt-10">
-                <Link 
-                  id="home-cta-software"
-                  to="/software" 
-                  className="inline-flex items-center space-x-2 bg-brand-teal hover:bg-brand-teal-light text-slate-900 font-bold px-6 py-3.5 rounded-xl transition-all w-full text-center justify-center shadow-lg hover:shadow-brand-teal/20"
+          <h1 className="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight leading-none mb-4">
+            The Platform Where
+            <div className="text-brand-teal min-h-[56px] sm:min-h-[72px] md:min-h-[88px] mt-2 block">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={taglineIndex}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.45 }}
                 >
-                  <span>Explore StoryShout SaaS</span>
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
-            </motion.div>
+                  {TAGLINES[taglineIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+          </h1>
 
-            {/* Records Pitch Card */}
-            <motion.div 
-              whileHover={{ y: -6 }}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-900 border border-brand-gold/20 p-8 shadow-2xl transition-all"
+          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+            StoryShout is a video campaign monetization platform. Creators launch campaigns with tiered supporter budgets. Supporters earn coins by engaging. Everyone gets paid.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/features"
+              className="inline-flex items-center space-x-2 bg-brand-teal hover:bg-brand-teal-light text-slate-900 font-bold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-brand-teal/20"
             >
-              <div className="absolute top-0 right-0 p-8 text-brand-gold/10 group-hover:text-brand-gold/20 transition-colors">
-                <Music size={140} />
-              </div>
-              
-              <div className="relative z-10 space-y-4">
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-brand-gold/10 text-brand-gold border border-brand-gold/30 mb-2">
-                  <Music size={24} />
-                </div>
-                <h3 className="font-display font-bold text-2xl text-white">StoryShout Records</h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  Independent West African record label representing raw creative sound. We partner directly with artists to handle production, global publishing, alternative audio mixes, and transparent ledger analytics.
-                </p>
-              </div>
-
-              <div className="relative z-10 pt-10">
-                <Link 
-                  id="home-cta-music"
-                  to="/music" 
-                  className="inline-flex items-center space-x-2 bg-brand-gold hover:bg-amber-400 text-slate-900 font-bold px-6 py-3.5 rounded-xl transition-all w-full text-center justify-center shadow-lg hover:shadow-brand-gold/20"
-                >
-                  <span>Discover Music Records</span>
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
-            </motion.div>
+              <span>Explore Features</span>
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              to="/contact?subject=Demo Request"
+              className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white font-medium px-7 py-3.5 rounded-xl transition-all border border-slate-700"
+            >
+              <Play size={16} className="fill-white" />
+              <span>Request a Demo</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* About Segment */}
+      {/* ── What is StoryShout ── */}
       <section className="py-20 bg-slate-50 dark:bg-[#0E1015] border-t border-b border-slate-100 dark:border-[#45A29E]/10 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
             <div className="lg:col-span-5 space-y-6">
               <div className="inline-flex items-center space-x-1.5 bg-brand-teal/5 text-brand-teal px-3 py-1 rounded-full text-xs font-mono font-bold border border-brand-teal/10">
-                <span>WHO WE ARE</span>
+                <span>WHAT IS STORYSHOUT?</span>
               </div>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white leading-tight">
-                Synthesizing Creative Expression and Engineering Precision
+                A Two-Sided Marketplace for Video Monetization
               </h2>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                Based in Lekki, Lagos, StoryShout Limited was founded by multi-hyphenate David Ogbodu. We operate as a modular hybrid: we craft reliable, low-overhead software products for scaling enterprises while investing dynamically in independent sound creation and artist development.
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                StoryShout connects video creators with supporters on social media. Creators fund campaigns with coins. Supporters earn coins by posting or sharing that content on their own accounts. The platform verifies the engagement and releases the payout — automatically.
               </p>
-              <div className="pt-2">
-                <Link to="/about" className="text-brand-teal hover:text-brand-teal-light font-bold flex items-center space-x-2">
-                  <span>Learn more about our vision</span>
-                  <ChevronRight size={16} />
-                </Link>
-              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Think of it as performance-based influencer marketing, built directly into a platform — with multi-gateway payments, KYC compliance, and a full double-entry ledger under the hood.
+              </p>
+              <Link to="/features" className="text-brand-teal hover:text-brand-teal-light font-bold flex items-center space-x-2">
+                <span>See all platform features</span>
+                <ChevronRight size={16} />
+              </Link>
             </div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
-                <div className="text-brand-teal"><Server size={28} /></div>
-                <h4 className="font-display font-bold text-slate-900 dark:text-white">Engineering First</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  We bundle clean code, fast databases, and localized dialect tone modules to remove conversion noise.
-                </p>
-              </div>
-              
-              <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
-                <div className="text-brand-gold"><Music size={28} /></div>
-                <h4 className="font-display font-bold text-slate-900 dark:text-white">Audio Integrity</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  We believe music should be unconstrained, dynamic, and distributed with full asset transparency.
-                </p>
-              </div>
-
-              <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
-                <div className="text-brand-teal"><Users size={28} /></div>
-                <h4 className="font-display font-bold text-slate-900 dark:text-white">Direct Partnerships</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  No bloated networks or toxic retainers. We operate clear equity models with software and music clients.
-                </p>
-              </div>
-
-              <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
-                <div className="text-brand-gold"><Award size={28} /></div>
-                <h4 className="font-display font-bold text-slate-900 dark:text-white">Cultural Delivery</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Our products are rooted in Lagos, tuned specifically to match West African infrastructure bottlenecks.
-                </p>
-              </div>
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {FEATURES.map((f, i) => (
+                <div key={i} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
+                  <div className="text-brand-teal">{f.icon}</div>
+                  <h4 className="font-display font-bold text-slate-900 dark:text-white">{f.title}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Trust & Testimonial Matrix */}
+      {/* ── How It Works ── */}
       <section className="py-20 bg-white dark:bg-brand-navy transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="font-display font-bold text-3xl text-slate-900 dark:text-white">
-              Vouched by Leaders and Creators
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">
-              We focus on building actual value. Read feedback from our clients and roster artists.
-            </p>
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <h2 className="font-display font-bold text-3xl text-slate-900 dark:text-white">How StoryShout Works</h2>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">From campaign creation to wallet withdrawal in four steps.</p>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-8">
+            {HOW_IT_WORKS.map((s, i) => (
+              <div key={i} className="space-y-3 relative">
+                <span className="block text-5xl font-display font-black text-brand-teal/20">{s.step}</span>
+                <h4 className="font-display font-bold text-slate-900 dark:text-white text-lg">{s.title}</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trust Signals ── */}
+      <section className="py-20 bg-slate-50 dark:bg-[#0E1015] border-t border-slate-100 dark:border-brand-teal/10 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+            {[
+              { icon: <Shield size={22} />, label: 'Enterprise-Grade Security', desc: 'JWT auth, MFA, trusted devices, IP blacklisting, rate limiting, and BCrypt password hashing.' },
+              { icon: <TrendingUp size={22} />, label: 'Real-Time Ledger', desc: 'Double-entry accounting system with idempotency keys, reconciliation reports, and full audit trails.' },
+              { icon: <CheckCircle size={22} />, label: 'Compliance Ready', desc: 'KYC verification, AML screening, risk assessment engine, and legal document acceptance tracking.' },
+            ].map((t, i) => (
+              <div key={i} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
+                <div className="text-brand-teal">{t.icon}</div>
+                <h4 className="font-display font-bold text-slate-900 dark:text-white">{t.label}</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Testimonials */}
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <h2 className="font-display font-bold text-3xl text-slate-900 dark:text-white">What Creators Say</h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t, idx) => (
-              <div 
-                key={idx} 
-                className="p-8 bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 rounded-2xl flex flex-col justify-between"
-              >
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className="p-8 bg-white dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 rounded-2xl flex flex-col justify-between">
                 <p className="text-slate-600 dark:text-slate-200 text-sm leading-relaxed italic mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div>
-                  <h4 className="font-display font-bold text-slate-900 dark:text-white text-base">
-                    {t.author}
-                  </h4>
-                  <p className="text-brand-teal text-xs font-mono uppercase mt-0.5">
-                    {t.role}
-                  </p>
+                  <h4 className="font-display font-bold text-slate-900 dark:text-white text-base">{t.author}</h4>
+                  <p className="text-brand-teal text-xs font-mono uppercase mt-0.5">{t.role}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* ── CTA Banner ── */}
+      <section className="py-20 bg-gradient-to-r from-slate-950 via-brand-navy to-slate-950 border-t border-brand-teal/20">
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
+          <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white">
+            Ready to launch your first campaign?
+          </h2>
+          <p className="text-slate-300 text-base leading-relaxed">
+            Join the waitlist or request a live demo. StoryShout is currently in active beta — onboarding select creators and brands.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 pt-2">
+            <Link
+              to="/contact?subject=Join Waitlist"
+              className="inline-flex items-center space-x-2 bg-brand-teal hover:bg-brand-teal-light text-slate-900 font-bold px-8 py-4 rounded-xl transition-all shadow-xl"
+            >
+              <span>Join the Waitlist</span>
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              to="/features"
+              className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white font-medium px-8 py-4 rounded-xl transition-all border border-slate-700"
+            >
+              <span>View Full Feature List</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

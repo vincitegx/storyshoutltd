@@ -106,28 +106,28 @@ async function seedDefaultData() {
     });
   }
 
-  // Check features
+  // Check features — plain English, no technical implementation details
   if (dbState.software_features.length === 0) {
     const features: SoftwareFeature[] = [
       {
-        title: 'Multi-Channel SaaS Campaigns',
-        description: 'Orchestrate high-delivery messages smoothly across SMS, WhatsApp, Email, and dynamic social feeds with real-time tracking, optimized for West African carrier rates.',
-        benefits: 'High SMS delivery rates, integrated WhatsApp Business API templates, and unified logs.',
-        icon: 'Send',
+        title: 'Video Campaign Creation',
+        description: 'Upload your video, pick a campaign tier, and launch. StoryShout automatically processes your video and publishes it across Facebook, Instagram, WhatsApp, Snapchat, and Telegram so your content reaches supporters wherever they are.',
+        benefits: 'One-click multi-platform publishing, automatic video processing, campaign performance tracking.',
+        icon: 'Video',
         order_num: 1,
       },
       {
-        title: 'AI Tone Localizer & Copywriter',
-        description: 'Tailor language, flow, and cultural dialect settings to make your marketing messages speak naturally to Lagos, Nairobi, or Accra customer demographics.',
-        benefits: 'Localized slang support, responsive audience segments, and automated brief generation.',
-        icon: 'Sparkles',
+        title: 'Supporter Tiers & Earnings',
+        description: 'Supporters earn coins by engaging with your campaign content on social media. Three tiers — Starter, Micro-Influencer, and Influencer — determine how supporters earn and when they can withdraw. The more they engage, the more they earn.',
+        benefits: 'Rewards real engagement, fair earning structure across all follower levels, transparent payout rules.',
+        icon: 'Users',
         order_num: 2,
       },
       {
-        title: 'High-Fidelity Delivery Telemetry',
-        description: 'Dive deep into detailed campaign metrics. Understand exactly when your links are opened, track dynamic customer conversions, and export ready-made PDF briefs.',
-        benefits: 'Traceable link shorteners, bounce diagnostics, and robust visual conversion Funnels.',
-        icon: 'BarChart3',
+        title: 'Multi-Currency Wallet & Payouts',
+        description: 'Deposit funds in your local currency via Stripe, PayPal, Flutterwave, or Paystack. The platform converts deposits to coins for campaign funding. Earned coins can be withdrawn back to your bank account or mobile wallet in your preferred currency.',
+        benefits: 'Multiple payment gateways, local currency support for Nigeria, Ghana, US, UK, and EU, transparent conversion rates.',
+        icon: 'Wallet',
         order_num: 3,
       },
     ];
@@ -141,35 +141,61 @@ async function seedDefaultData() {
     }
   }
 
-  // Check pricing
+  // Check pricing — coin-based, no hardcoded fiat values
   if (dbState.pricing_plans.length === 0) {
     const plans: PricingPlan[] = [
       {
-        name: 'Free Starter',
-        price: '₦0',
-        billing: 'forever free',
-        features: JSON.stringify(['500 Campaign Contacts/mo', 'Standard SMS & Email', 'Basic Delivery Reports', 'Standard Email Support']),
+        name: 'Starter',
+        price: 'Free',
+        billing: 'no cost',
+        features: JSON.stringify([
+          'Up to 3 free campaigns per month',
+          'Basic publishing to all social platforms',
+          'Standard wallet features',
+          'Email support within 48 hours'
+        ]),
         popular: 0,
       },
       {
         name: 'Growth',
-        price: '₦15,000',
-        billing: 'per month',
-        features: JSON.stringify(['5,000 Campaign Contacts/mo', 'Priority WhatsApp Integration', 'AI Local Tone Tuner', '1-Hour SLA Web Chat Support']),
+        price: 'Pay As You Go',
+        billing: 'per campaign',
+        features: JSON.stringify([
+          'Unlimited paid campaigns',
+          'All 5 social platforms',
+          'Full supporter tier access',
+          'Priority coin processing',
+          'Chat support within 4 hours',
+          'Basic analytics dashboard'
+        ]),
         popular: 0,
       },
       {
-        name: 'Corporate Pro',
-        price: '₦45,000',
-        billing: 'per month',
-        features: JSON.stringify(['50,000 Campaign Contacts/mo', 'Advanced Automation Workflows', 'Team Workspace Sharing', 'Dedicated Success Manager']),
+        name: 'Professional',
+        price: 'Volume-Based',
+        billing: 'per campaign',
+        features: JSON.stringify([
+          'Everything in Growth',
+          'Exclusive campaign types',
+          'Advanced analytics and reports',
+          'API access for integrations',
+          'Dedicated account manager',
+          'Bulk campaign discounts'
+        ]),
         popular: 1,
       },
       {
-        name: 'Enterprise Apex',
-        price: '₦120,000',
-        billing: 'per month',
-        features: JSON.stringify(['Unlimited Campaigns & Logs', 'Custom Sender IDs', 'White-label Custom Domains', '24/7 Phone & Slack Support']),
+        name: 'Enterprise',
+        price: 'Custom',
+        billing: 'tailored plan',
+        features: JSON.stringify([
+          'Unlimited everything',
+          'White-label options',
+          'Custom integrations',
+          'Uptime guarantee',
+          '24/7 priority support',
+          'Dedicated infrastructure'
+        ]),
         popular: 0,
       },
     ];
@@ -183,19 +209,19 @@ async function seedDefaultData() {
     }
   }
 
-  // Check artists
+  // Check artists — kept for admin panel, not publicly visible
   if (dbState.artists.length === 0) {
     const artists: Artist[] = [
       {
         name: 'David Ogbodu',
-        bio: 'Founder of StoryShout Limited. Synthesizing advanced campaign technology solutions and brand-new auditory directions from West Africa. Fronting the Lagos alternative tech-art wave.',
+        bio: 'Founder of StoryShout Limited. Software engineer and creative technologist building the future of video campaign monetization for African creators.',
         genre: 'Alternative Afro-Fusion',
         image_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80',
         featured: 1,
       },
       {
         name: 'StoryShout Collective',
-        bio: 'A boundary-pushing fluid syndicate of sound designers, visual developers, and alternative beat-makers focusing on procedurally mixed live soundscapes and dynamic rhythms.',
+        bio: 'A fluid collective of sound designers, visual developers, and alternative beat-makers exploring procedurally mixed live soundscapes.',
         genre: 'Experimental Afro-Electronic',
         image_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
         featured: 1,
@@ -211,7 +237,7 @@ async function seedDefaultData() {
     }
   }
 
-  // Check music_releases
+  // Check music_releases — kept for admin panel, not publicly visible
   if (dbState.music_releases.length === 0) {
     const releases: MusicRelease[] = [
       {
