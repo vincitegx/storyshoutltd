@@ -110,7 +110,9 @@ export default function About() {
             <div className="md:col-span-4 shrink-0 max-w-sm mx-auto md:mx-0">
               <div className="relative rounded-2xl overflow-hidden aspect-square border border-brand-teal/30 shadow-md">
                 <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=450&auto=format&fit=crop&q=80"
+                    src="assets/david.png"
+                    width={60}
+                    height={50}
                     alt="David Ogbodu — Founder of StoryShout Limited"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
@@ -128,7 +130,7 @@ export default function About() {
               </p>
               <div className="pt-2">
               <span className="text-[10px] font-mono text-slate-400 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800">
-                Lagos, Nigeria • david@storyshoutltd.com
+                Lagos, Nigeria • david.ogbodu@storyshoutltd.com
               </span>
               </div>
             </div>

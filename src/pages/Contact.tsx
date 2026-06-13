@@ -118,7 +118,7 @@ export default function Contact() {
               <div className="flex items-start space-x-3.5">
                 <Mail size={18} className="text-brand-teal shrink-0 mt-0.5" />
                 <span className="text-slate-300 hover:text-brand-teal cursor-pointer transition-colors">
-                  contact@storyshoutltd.com
+                  infos@storyshoutltd.com
                 </span>
               </div>
               <div className="flex items-start space-x-3.5">

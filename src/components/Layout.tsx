@@ -201,7 +201,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                 <p className="text-sm font-sans leading-relaxed text-slate-400">
                   Lekki Phase I, Lagos,<br />
                   Nigeria.<br />
-                  <span className="text-brand-teal hover:underline block pt-2">contact@storyshoutltd.com</span>
+                  <span className="text-brand-teal hover:underline block pt-2">infos@storyshoutltd.com</span>
                 </p>
                 <p className="text-xs font-mono text-slate-500">
                   Domain: <span className="text-brand-gold">storyshoutltd.com</span>
