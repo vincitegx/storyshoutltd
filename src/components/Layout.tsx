@@ -47,15 +47,30 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
               </Link>
 
               {/* Desktop Navigation */}
-              <nav className="hidden md:flex space-x-8 items-center font-medium">
-                <Link id="nav-features" to="/features" className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/features' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                  Features
+              <nav className="hidden md:flex space-x-8 items-center font-medium" aria-label="Main navigation">
+                <Link
+                  id="nav-features"
+                  to="/features"
+                  title="StoryShout platform features — audience promotion and content sharing"
+                  className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/features' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}
+                >
+                  How It Works
                 </Link>
-                <Link id="nav-about" to="/about" className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/about' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                <Link
+                  id="nav-about"
+                  to="/about"
+                  title="About StoryShout — the audience promotion platform for startups and creators"
+                  className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/about' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}
+                >
                   About
                 </Link>
-                <Link id="nav-contact" to="/contact" className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/contact' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                  Contact
+                <Link
+                  id="nav-contact"
+                  to="/contact"
+                  title="Contact StoryShout — request a demo or join the waitlist"
+                  className={`hover:text-brand-teal transition-colors py-2 text-sm ${location.pathname === '/contact' ? 'text-brand-teal' : darkMode ? 'text-slate-300' : 'text-slate-600'}`}
+                >
+                  Get Started
                 </Link>
 
                 <div className="h-4 w-px bg-slate-300 dark:bg-slate-700" />
@@ -69,7 +84,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                             ? 'border-[#45A29E]/30 text-brand-gold hover:bg-slate-800'
                             : 'border-slate-200 text-brand-navy hover:bg-slate-100'
                     }`}
-                    title="Toggle Mode"
+                    title="Toggle dark mode"
                 >
                   {darkMode ? <Sun size={17} /> : <Moon size={17} />}
                 </button>
@@ -115,7 +130,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                         to="/features"
                         className={`block px-3 py-2 rounded-lg text-base font-medium ${location.pathname === '/features' ? 'text-brand-teal bg-brand-teal/5' : 'text-slate-400'}`}
                     >
-                      Features
+                      How It Works
                     </Link>
                     <Link
                         to="/about"
@@ -127,7 +142,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                         to="/contact"
                         className={`block px-3 py-2 rounded-lg text-base font-medium ${location.pathname === '/contact' ? 'text-brand-teal bg-brand-teal/5' : 'text-slate-400'}`}
                     >
-                      Contact
+                      Get Started
                     </Link>
                   </div>
                 </motion.div>
@@ -159,7 +174,7 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
                 </span>
                 </div>
                 <p className="text-sm leading-relaxed">
-                  A video campaign monetization platform connecting creators with supporters through a transparent coin economy and multi-gateway payment infrastructure. Built for African creators, available globally.
+                  An audience promotion platform where your content gets shared by real people to trusted social circles. Brands get authentic reach. Sharers earn rewards. One post becomes one-to-many.
                 </p>
                 <div className="pt-2">
                 <span className="text-xs bg-brand-teal/10 text-brand-teal border border-brand-teal/20 px-2.5 py-1 rounded-full font-mono">
@@ -172,10 +187,11 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
               <div className="space-y-4">
                 <h4 className="font-display font-bold text-white uppercase tracking-wider text-xs">Platform</h4>
                 <ul className="space-y-2 text-sm text-slate-400">
-                  <li><Link to="/features" className="hover:text-brand-teal transition-colors">Features</Link></li>
+                  <li><Link to="/features" className="hover:text-brand-teal transition-colors">How It Works</Link></li>
                   <li><Link to="/features#pricing" className="hover:text-brand-teal transition-colors">Pricing</Link></li>
                   <li><Link to="/features#faqs" className="hover:text-brand-teal transition-colors">FAQs</Link></li>
                   <li><Link to="/about" className="hover:text-brand-teal transition-colors">About Us</Link></li>
+                  <li><Link to="/blog" className="hover:text-brand-teal transition-colors">Blog</Link></li>
                 </ul>
               </div>
 
@@ -195,10 +211,10 @@ export default function Layout({ children, darkMode, setDarkMode }: LayoutProps)
 
             <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs text-slate-500">
               <p>
-                &copy; {new Date().getFullYear()} StoryShout Limited. All rights reserved. &quot;Built to Monetize Video at Scale.&quot;
+                &copy; {new Date().getFullYear()} StoryShout Limited. All rights reserved. &quot;Audience Promotion Platform for Startups &amp; Creators.&quot;
               </p>
               <div className="flex space-x-6">
-                <span>React + Vite + Node — Video Campaign Monetization Platform</span>
+                <span>StoryShout — Audience Promotion Platform for Startups &amp; Creators</span>
               </div>
             </div>
           </div>

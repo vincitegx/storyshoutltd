@@ -449,6 +449,15 @@ async function startServer() {
     app.get('*', (req: any, res) => {
       let html = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
       html = html.replace('</head>', `<script>window.__SUBDOMAIN__="${req.subdomain}";</script></head>`);
+      if (req.subdomain === 'label') {
+        html = html
+          .replace(/(<link rel="canonical" href=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
+          .replace(/(<meta property="og:url" content=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
+          .replace(/(<meta property="og:title" content=")[^"]*(")/, '$1StoryShout Records \u2014 Independent Music Label | Lagos$2')
+          .replace(/(<meta name="og:description" content=")[^"]*(")/, '$1Independent alternative music label from Lekki, Lagos. Stream releases and explore our artist roster.$2')
+          .replace(/(<meta name="twitter:url" content=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
+          .replace(/(<meta name="twitter:title" content=")[^"]*(")/, '$1StoryShout Records \u2014 Independent Music Label | Lagos$2');
+      }
       res.send(html);
     });
   }

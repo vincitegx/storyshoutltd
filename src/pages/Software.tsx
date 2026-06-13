@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import {
   Video, Users, Wallet, Globe, BarChart3, Shield,
@@ -10,11 +11,11 @@ import { SoftwareFeature, PricingPlan } from '../types';
 const FAQS = [
   {
     q: 'What is StoryShout?',
-    a: 'StoryShout is a video campaign monetization platform. Creators upload videos, fund campaigns with coins, and supporters earn coins by engaging with that content on social media. The platform verifies engagement and releases payouts automatically.',
+    a: 'StoryShout is an audience promotion platform. Instead of paying for cold reach or expensive influencers, brands create campaigns that real people (Shouters) share to their trusted social circles. Brands get authentic, scalable reach. Shouters earn rewards for their influence.',
   },
   {
     q: 'How does the coin system work?',
-    a: 'Coins are StoryShout\'s internal currency. You deposit funds in your local currency (Naira, Dollars, Pounds, Euros, Cedis) via your preferred payment method — Stripe, PayPal, Flutterwave, or Paystack. Deposits are converted to coins at a transparent rate. You use coins to fund campaigns, and earned coins can be withdrawn back to your bank account or mobile wallet at any time.',
+    a: 'Coins are StoryShout\'s internal currency — they keep pricing fair across every country. You deposit funds in your local currency via your preferred payment method — Stripe, PayPal, Flutterwave, or Paystack. Deposits convert to coins at a transparent rate. Use coins to fund campaigns. Earn coins by sharing. Withdraw to your bank account anytime.',
   },
   {
     q: 'How much does a campaign cost?',
@@ -103,18 +104,27 @@ export default function Software() {
 
   return (
       <div className="py-12 md:py-20 font-sans">
+        <Helmet>
+          <title>Platform Features & Pricing — StoryShout Audience Promotion Software</title>
+          <meta name="description" content="Explore StoryShout's campaign features, supporter tier system, coin wallet, multi-platform publishing, and transparent pricing plans. The complete audience promotion platform for startups and creators." />
+          <link rel="canonical" href="https://storyshoutltd.com/features" />
+          <meta property="og:url" content="https://storyshoutltd.com/features" />
+          <meta property="og:title" content="Platform Features & Pricing — StoryShout" />
+          <meta name="twitter:url" content="https://storyshoutltd.com/features" />
+          <meta name="twitter:title" content="Platform Features & Pricing — StoryShout" />
+        </Helmet>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ── Masthead ── */}
           <div className="text-center max-w-3xl mx-auto mb-20 space-y-5">
           <span className="text-xs bg-brand-teal/10 border border-brand-teal/30 px-3.5 py-1.5 rounded-full text-brand-teal font-mono uppercase tracking-widest font-bold">
-            Video Campaign Monetization Platform
+            Audience Promotion Platform
           </span>
             <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-slate-900 dark:text-white leading-tight">
               StoryShout Platform Features
             </h1>
             <p className="text-slate-600 dark:text-slate-300 text-lg font-light leading-relaxed">
-              Create video campaigns, fund them with coins, and let supporters earn by engaging with your content across social media. Multi-currency wallets, transparent pricing, and automated payouts.
+              Create campaigns, fund them with coins, and let real people share your content to their trusted social circles. You get authentic reach. They earn rewards. Transparent pricing, no hidden fees.
             </p>
             <div className="flex flex-wrap gap-4 justify-center pt-2">
               <button
@@ -150,7 +160,7 @@ export default function Software() {
                 Core Platform Capabilities
               </h2>
               <p className="text-slate-500 text-sm mt-1">
-                Everything you need to create, fund, and monetize video campaigns.
+                Everything you need to turn your audience into your marketing engine.
               </p>
             </div>
 
@@ -189,7 +199,7 @@ export default function Software() {
               <h2 className="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white">
                 Everything the Platform Does
               </h2>
-              <p className="text-slate-500 text-sm mt-1">A detailed look at what StoryShout offers creators and supporters.</p>
+              <p className="text-slate-500 text-sm mt-1">A detailed look at what StoryShout offers brands and Shouters.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -198,22 +208,22 @@ export default function Software() {
                   icon: <Video size={20} />,
                   title: 'Campaign Creation & Publishing',
                   items: [
-                    'Upload videos in any common format',
-                    'Automatic processing and optimization for each social platform',
-                    'One-click publishing to Facebook, Instagram, WhatsApp, Snapchat, and Telegram',
-                    'Track campaign status from submission to completion',
-                    'Rerun successful campaigns or pause underperforming ones',
+                    'Upload videos, or promotional content',
+                    'Set your coin budget and campaign duration',
+                    'Your campaign becomes available to Shouters across all supported platforms',
+                    'Track campaign status from launch to completion',
+                    'Rerun successful campaigns or adjust underperforming ones',
                   ],
                 },
                 {
                   icon: <Users size={20} />,
                   title: 'Supporter & Tier System',
                   items: [
-                    'Starter tier: free-before-paid cycle — try before you earn',
+                    'Starter tier: try before you earn — share a few campaigns for free',
                     'Micro-Influencer: always paid for campaign participation',
                     'Influencer: paid on standard and exclusive campaigns at higher rates',
                     'Coins held securely until engagement is verified',
-                    'Automatic verification when supporters share your content',
+                    'Automatic verification when Shouters share your content',
                   ],
                 },
                 {
@@ -400,7 +410,7 @@ export default function Software() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(69,162,158,0.1),transparent)]" />
             <div className="relative z-10 max-w-2xl mx-auto space-y-6">
               <h3 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
-                Ready to launch your first video campaign?
+                Ready to turn your audience into your marketing engine?
               </h3>
               <p className="text-slate-300 text-sm font-light leading-relaxed">
                 StoryShout is in active beta. Join the waitlist or request a live walkthrough of the platform.

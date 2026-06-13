@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowRight, Video, Users, Wallet, Globe, ChevronRight,
@@ -7,57 +8,57 @@ import {
 } from 'lucide-react';
 
 const TAGLINES = [
-  'Monetize Your Videos.',
-  'Grow Your Audience.',
-  'Get Paid to Create.',
+  'Retold by Everyone.',
+  'Shared by Real People.',
+  'Amplified by Trust.',
 ];
 
 const FEATURES = [
   {
     icon: <Video size={24} />,
-    title: 'Video Campaign Creation',
-    desc: 'Upload your video, set a tier, and launch a campaign. StoryShout handles file conversion, S3 storage, and automatic publishing to Facebook and Instagram.',
+    title: 'Create Campaigns',
+    desc: 'Upload your content, set your budget in coins, and launch a campaign. StoryShout makes your content available for real users to share across their social media accounts.',
   },
   {
     icon: <Users size={24} />,
-    title: 'Tiered Supporter System',
-    desc: 'Campaigns attract supporters across STARTER, MICRO-INFLUENCER, and INFLUENCER tiers. Each tier has its own pay cycle — creating a self-sustaining coin economy.',
+    title: 'Real People Share',
+    desc: 'Everyday users — we call them Shouters — choose campaigns they believe in and share your content to their trusted circles. Friends, family, followers. Real reach.',
   },
   {
     icon: <Wallet size={24} />,
-    title: 'Coin Wallet & Payouts',
-    desc: 'Deposit fiat, earn coins by supporting campaigns, and withdraw your earnings. Wallets support Stripe, PayPal, Flutterwave, and Paystack — per your currency.',
+    title: 'Shouters Earn Rewards',
+    desc: 'When Shouters share your content and their engagement is verified, they earn coins. Coins can be withdrawn as real currency. Their influence has value — and they get paid for it.',
   },
   {
     icon: <Globe size={24} />,
-    title: 'Multi-Platform Publishing',
-    desc: 'Campaigns publish automatically to Facebook, Instagram, WhatsApp, Snapchat, and Telegram — with real-time post insights and follower sync.',
+    title: 'You Get Authentic Reach',
+    desc: 'Every share reaches a new trusted circle. No bots. No fake impressions. Just real people telling real people about your brand. That is marketing that actually works.',
   },
 ];
 
 const TESTIMONIALS = [
   {
-    quote: "StoryShout unlocked a revenue stream I didn't know existed. My campaign hit its verified target in under 48 hours and the payout was seamless.",
-    author: 'Gbenga Adebayo',
-    role: 'Content Creator, Lagos',
+    quote: "We spent a fraction of what we'd pay an influencer and got better results. Real people shared our product because they actually liked it. Our sign-ups tripled that week.",
+    author: 'Lucky Ovie',
+    role: 'Startup Founder, Lagos',
   },
   {
-    quote: "The influencer tier system is brilliant. As a MICRO-INFLUENCER I earn coins on every campaign I support — it's genuinely passive income for what I already do.",
-    author: 'Chioma Nwosu',
-    role: 'Lifestyle Influencer, Abuja',
+    quote: "As a Shouter, I earn by sharing brands I genuinely use. It's not selling out — it's getting paid for what I'd do anyway. I've withdrawn earnings twice this month.",
+    author: 'Akinima Chineye',
+    role: 'Shouter, Abuja',
   },
   {
-    quote: "Multi-gateway support is a game changer. My Stripe account handles USD withdrawals while my Nigerian audience deposits via Flutterwave. Zero friction.",
-    author: 'Emeka Okafor',
-    role: 'Brand Strategist, Port Harcourt',
+    quote: "We tried ads. We tried influencers. Nothing gave us the authentic word-of-mouth StoryShout delivered. Every share came from someone who actually cared about our product.",
+    author: 'Joseph Eseoghene',
+    role: 'Brand Owner, Port Harcourt',
   },
 ];
 
 const HOW_IT_WORKS = [
-  { step: '01', title: 'Create a Campaign', text: 'Upload your video, pick a support tier, confirm compliance, and submit. Your campaign is queued for processing immediately.' },
-  { step: '02', title: 'Budget is Locked', text: 'For paid campaigns, your coin budget is held in escrow. Supporters earn from it as they engage — verified by our post-check engine.' },
-  { step: '03', title: 'Supporters Engage', text: 'Supporters post or share your content on their social accounts. StoryShout verifies the action and releases coins to their wallet.' },
-  { step: '04', title: 'Withdraw Earnings', text: 'Supporters convert earned coins to fiat and withdraw via their linked payment gateway — Stripe, PayPal, Flutterwave, or Paystack.' },
+  { step: '01', title: 'Create Your Campaign', text: 'Upload your content, set your coin budget, and define your campaign goals. Your campaign goes live and becomes available for Shouters to share.' },
+  { step: '02', title: 'Shouters Share Your Story', text: 'Real users pick campaigns they believe in and share your content to their social media — Facebook, Instagram, WhatsApp, Snapchat, and Telegram.' },
+  { step: '03', title: 'Engagement Is Verified', text: 'StoryShout checks that shares are genuine and reach real people. Verified engagement triggers rewards for the Shouters who promoted your content.' },
+  { step: '04', title: 'Everyone Wins', text: 'You get authentic, scalable reach. Shouters earn coins and withdraw real currency. One campaign creates a ripple effect through trusted networks.' },
 ];
 
 export default function Home() {
@@ -72,6 +73,15 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
+      <Helmet>
+        <title>StoryShout — Turn Your Audience Into Your Marketing Engine | Audience Promotion Platform</title>
+        <meta name="description" content="StoryShout turns everyday users into micro-influencers who share your content to trusted social circles. Affordable, authentic, and scalable audience promotion for startups, creators, and small brands." />
+        <link rel="canonical" href="https://storyshoutltd.com/" />
+        <meta property="og:url" content="https://storyshoutltd.com/" />
+        <meta property="og:title" content="StoryShout — Turn Your Audience Into Your Marketing Engine" />
+        <meta name="twitter:url" content="https://storyshoutltd.com/" />
+        <meta name="twitter:title" content="StoryShout — Turn Your Audience Into Your Marketing Engine" />
+      </Helmet>
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden pt-20 pb-24 md:py-36 bg-[#0B0C10] text-white">
@@ -84,7 +94,7 @@ export default function Home() {
           </div>
 
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight leading-none mb-4">
-            The Platform Where
+            Your Story,
             <div className="text-brand-teal min-h-[56px] sm:min-h-[72px] md:min-h-[88px] mt-2 block">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -100,8 +110,11 @@ export default function Home() {
             </div>
           </h1>
 
-          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            StoryShout is a video campaign monetization platform. Creators launch campaigns with tiered supporter budgets. Supporters earn coins by engaging. Everyone gets paid.
+          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-4 leading-relaxed">
+            Why reach one person when you can reach everyone they know?
+          </p>
+          <p className="text-slate-400 text-base max-w-xl mx-auto mb-10 leading-relaxed">
+            StoryShout turns everyday users into micro-influencers who share your content to trusted social circles. You get authentic reach. They earn rewards. One post becomes one-to-many.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
@@ -109,7 +122,7 @@ export default function Home() {
               to="/features"
               className="inline-flex items-center space-x-2 bg-brand-teal hover:bg-brand-teal-light text-slate-900 font-bold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-brand-teal/20"
             >
-              <span>Explore Features</span>
+              <span>See How It Works</span>
               <ArrowRight size={18} />
             </Link>
             <Link
@@ -117,7 +130,7 @@ export default function Home() {
               className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white font-medium px-7 py-3.5 rounded-xl transition-all border border-slate-700"
             >
               <Play size={16} className="fill-white" />
-              <span>Request a Demo</span>
+              <span>Request Early Access</span>
             </Link>
           </div>
         </div>
@@ -132,13 +145,13 @@ export default function Home() {
                 <span>WHAT IS STORYSHOUT?</span>
               </div>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white leading-tight">
-                A Two-Sided Marketplace for Video Monetization
+                Your Audience Becomes Your Marketing Engine
               </h2>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                StoryShout connects video creators with supporters on social media. Creators fund campaigns with coins. Supporters earn coins by posting or sharing that content on their own accounts. The platform verifies the engagement and releases the payout — automatically.
+                Instead of paying for cold reach, StoryShout lets brands create campaigns that everyday users share to their own social circles. Each share reaches friends, family, and followers — people who actually trust them. Brands get authentic reach. Sharers earn rewards for their influence.
               </p>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                Think of it as performance-based influencer marketing, built directly into a platform — with multi-gateway payments, KYC compliance, and a full double-entry ledger under the hood.
+                It's word-of-mouth marketing at scale. One post becomes one-to-many. And because shares come from real people — not bots or paid influencers — the social proof is baked into every single post.
               </p>
               <Link to="/features" className="text-brand-teal hover:text-brand-teal-light font-bold flex items-center space-x-2">
                 <span>See all platform features</span>
@@ -184,21 +197,21 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
             {[
-              { icon: <Shield size={22} />, label: 'Enterprise-Grade Security', desc: 'JWT auth, MFA, trusted devices, IP blacklisting, rate limiting, and BCrypt password hashing.' },
-              { icon: <TrendingUp size={22} />, label: 'Real-Time Ledger', desc: 'Double-entry accounting system with idempotency keys, reconciliation reports, and full audit trails.' },
-              { icon: <CheckCircle size={22} />, label: 'Compliance Ready', desc: 'KYC verification, AML screening, risk assessment engine, and legal document acceptance tracking.' },
+              { icon: <Shield size={22} />, label: 'Secure & Protected', desc: 'Your account is protected with multi-factor authentication, trusted device management, and industry-standard encryption. Every transaction is verified and recorded.' },
+              { icon: <TrendingUp size={22} />, label: 'Transparent Earnings', desc: 'See exactly how much you earn from every campaign. Full transaction history, real-time balance tracking, and clear payout reports — no hidden fees.' },
+              { icon: <CheckCircle size={22} />, label: 'Verified & Compliant', desc: 'Identity verification keeps the platform safe for everyone. All users complete a simple verification process before accessing wallet and campaign features.' },
             ].map((t, i) => (
-              <div key={i} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
-                <div className="text-brand-teal">{t.icon}</div>
-                <h4 className="font-display font-bold text-slate-900 dark:text-white">{t.label}</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{t.desc}</p>
-              </div>
+                <div key={i} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl space-y-3 shadow-sm">
+                  <div className="text-brand-teal">{t.icon}</div>
+                  <h4 className="font-display font-bold text-slate-900 dark:text-white">{t.label}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{t.desc}</p>
+                </div>
             ))}
           </div>
 
           {/* Testimonials */}
           <div className="text-center max-w-xl mx-auto mb-12">
-            <h2 className="font-display font-bold text-3xl text-slate-900 dark:text-white">What Creators Say</h2>
+            <h2 className="font-display font-bold text-3xl text-slate-900 dark:text-white">What Our Users Say</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TESTIMONIALS.map((t, i) => (
@@ -220,10 +233,10 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-r from-slate-950 via-brand-navy to-slate-950 border-t border-brand-teal/20">
         <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white">
-            Ready to launch your first campaign?
+            Ready to turn your audience into your marketing engine?
           </h2>
           <p className="text-slate-300 text-base leading-relaxed">
-            Join the waitlist or request a live demo. StoryShout is currently in active beta — onboarding select creators and brands.
+            Join the waitlist or request a live demo. StoryShout is in active beta — onboarding startups, creators, and small brands who want real reach.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             <Link

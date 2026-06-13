@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Play, Pause, SkipForward, SkipBack, Volume2, Music, Disc, 
@@ -141,6 +142,15 @@ export default function MusicPage() {
 
   return (
     <div className="py-12 md:py-20 font-sans">
+      <Helmet>
+        <title>StoryShout Records — Independent Music Label | Lagos, Nigeria</title>
+        <meta name="description" content="StoryShout Records is an independent alternative music label from Lekki, Lagos. Stream releases, explore our artist roster, and submit your demo for review. West African sound, global reach." />
+        <link rel="canonical" href="https://label.storyshoutltd.com/" />
+        <meta property="og:url" content="https://label.storyshoutltd.com/" />
+        <meta property="og:title" content="StoryShout Records — Independent Music Label | Lagos" />
+        <meta name="twitter:url" content="https://label.storyshoutltd.com/" />
+        <meta name="twitter:title" content="StoryShout Records — Independent Music Label | Lagos" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Head */}

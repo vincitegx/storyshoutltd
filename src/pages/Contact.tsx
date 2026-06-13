@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, CheckCircle, Mail, MapPin, Building, AlertCircle } from 'lucide-react';
 
@@ -74,6 +75,15 @@ export default function Contact() {
 
   return (
     <div className="py-12 md:py-20 font-sans max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Contact StoryShout — Request a Demo or Join the Waitlist</title>
+        <meta name="description" content="Get in touch with StoryShout. Request a live demo, join the beta waitlist, ask about pricing, or explore enterprise and partnership opportunities. Based in Lekki, Lagos." />
+        <link rel="canonical" href="https://storyshoutltd.com/contact" />
+        <meta property="og:url" content="https://storyshoutltd.com/contact" />
+        <meta property="og:title" content="Contact StoryShout — Request a Demo or Join the Waitlist" />
+        <meta name="twitter:url" content="https://storyshoutltd.com/contact" />
+        <meta name="twitter:title" content="Contact StoryShout — Request a Demo or Join the Waitlist" />
+      </Helmet>
 
       {/* ── Header ── */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-3">

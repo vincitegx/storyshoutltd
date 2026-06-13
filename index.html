@@ -1,13 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StoryShout Limited | Campaign SaaS & Alternative Music Label</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Primary Meta Tags -->
+  <title>StoryShout — Audience Promotion Platform for Startups & Creators</title>
+  <meta name="description" content="StoryShout turns everyday users into micro-influencers who share your content to trusted social circles. Affordable, authentic, and scalable audience promotion for startups, creators, and small brands." />
+  <meta name="keywords" content="audience promotion platform, micro-influencer marketing, user-generated content platform, word of mouth marketing, content sharing rewards, startup marketing, indie musician promotion, brand ambassador platform" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://storyshoutltd.com/" />
+  <meta property="og:title" content="StoryShout — Turn Your Audience Into Your Marketing Engine" />
+  <meta property="og:description" content="Instead of paying for cold reach, StoryShout turns everyday users into micro-influencers who share your content to real social circles. Authentic, scalable, cost-effective." />
+  <meta property="og:image" content="https://storyshoutltd.com/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://storyshoutltd.com/" />
+  <meta name="twitter:title" content="StoryShout — Turn Your Audience Into Your Marketing Engine" />
+  <meta name="twitter:description" content="Instead of paying for cold reach, StoryShout turns everyday users into micro-influencers. Authentic, scalable, cost-effective audience promotion." />
+  <meta name="twitter:image" content="https://storyshoutltd.com/og-image.png" />
+
+  <!-- Canonical URL — managed per-route by react-helmet-async -->
+
+  <!-- Robots -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "StoryShout Limited",
+      "url": "https://storyshoutltd.com",
+      "logo": "https://storyshoutltd.com/logo.png",
+      "description": "StoryShout turns everyday users into micro-influencers who share your content to trusted social circles. Affordable, authentic, and scalable audience promotion for startups, creators, and small brands.",
+      "foundingDate": "2026",
+      "founder": {
+        "@type": "Person",
+        "name": "David Ogbodu"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lekki",
+        "addressRegion": "Lagos",
+        "addressCountry": "NG"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "contact@storyshoutltd.com"
+      },
+      "sameAs": [
+        "https://instagram.com/storyshoutltd",
+        "https://twitter.com/storyshoutltd",
+        "https://linkedin.com/company/storyshoutltd",
+        "https://tiktok.com/@storyshoutltd"
+      ]
+    }
+  </script>
+
+  <!-- Structured Data: Software Application -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "StoryShout",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "A platform where your audience promotes your content. Campaign-based content distribution with reward systems for supporters who share to their social media.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  </script>
+
+  <!-- Structured Data: FAQ (for /features page, injected via React or here as page-level) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is StoryShout?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "StoryShout is a platform where your audience promotes your content. Instead of paying for cold reach, you fund campaigns where real people (Shouters) share your content to their trusted social circles. They earn rewards — you get authentic, scalable reach."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does StoryShout work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Brands create campaigns with content they want promoted. Users (Shouters) share that content to their social media accounts. The platform verifies engagement, and Shouters earn coins. Coins can be withdrawn as real currency. It's a one-to-one-to-many model."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is StoryShout for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "StoryShout is built for startups with limited ad budgets, indie musicians and creators needing scalable promotion, and small brands trying to reach real people — not bots."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does StoryShout cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "StoryShout uses a coin-based system. You deposit funds in your local currency and receive coins at transparent exchange rates. Campaigns cost coins based on the tier and platform. There is a free Starter plan for up to 3 campaigns per month."
+          }
+        }
+      ]
+    }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/index.css" />
+</head>
+<body class="antialiased">
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

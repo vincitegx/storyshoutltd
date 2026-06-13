@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Software from './pages/Software';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Music from './pages/Music';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
@@ -101,6 +103,8 @@ export default function App() {
             </Layout>
           }
         />
+        <Route path="/blog" element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}><Blog /></Layout>} />
+        <Route path="/blog/:slug" element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}><BlogPost /></Layout>} />
 
         {/* Legacy /software redirect */}
         <Route path="/software" element={<Navigate to="/features" replace />} />
