@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence } from 'motion/react';
-import { Send, CheckCircle, Mail, MapPin, Building, AlertCircle } from 'lucide-react';
+import { Send, Mail, MapPin, Building } from 'lucide-react';
 import { useToast } from '../components/Toast';
 
 const GRADIENT = 'linear-gradient(135deg, #FF5F2E 0%, #FF8A00 100%)';
@@ -19,10 +18,7 @@ export default function Contact() {
   });
 
   const [selectedPlan, setSelectedPlan] = useState('');
-  const [status, setStatus] = useState<{ type: 'idle' | 'loading' | 'success' | 'error'; message: string }>({
-    type: 'idle',
-    message: '',
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const rawSubject = searchParams.get('subject');
@@ -48,7 +44,7 @@ export default function Contact() {
       showToast('error', 'Please fill in your name, email, and message.');
       return;
     }
-    setStatus({ type: 'loading', message: 'Sending your message...' });
+    setIsLoading(true);
     try {
       const res  = await fetch('/api/contact', {
         method: 'POST',
@@ -57,17 +53,16 @@ export default function Contact() {
       });
       const data = await res.json();
       if (res.ok) {
-        setStatus({ type: 'success', message: "Message received. We'll be in touch within one business day." });
+        showToast('success', "Message sent! We'll be in touch within one business day.");
         setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
         setSelectedPlan('');
-        showToast('success', "Message sent! We'll be in touch within one business day.");
       } else {
-        setStatus({ type: 'error', message: data.error || 'Something went wrong. Please try again.' });
         showToast('error', data.error || 'Something went wrong. Please try again.');
       }
     } catch {
-      setStatus({ type: 'error', message: 'Could not reach the server. Please try again later.' });
       showToast('error', 'Could not reach the server. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -187,23 +182,6 @@ export default function Contact() {
                 <p className="text-sm text-slate-400 mt-1">We'll reply to your email — usually same or next business day.</p>
               </div>
 
-              <AnimatePresence mode="wait">
-                {status.type === 'success' && (
-                  <motion.div key="success" initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -8, opacity: 0 }}
-                    className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-start space-x-3 text-sm">
-                    <CheckCircle size={16} className="shrink-0 mt-0.5 text-emerald-500" />
-                    <span>{status.message}</span>
-                  </motion.div>
-                )}
-                {status.type === 'error' && (
-                  <motion.div key="error" initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -8, opacity: 0 }}
-                    className="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl flex items-start space-x-3 text-sm">
-                    <AlertCircle size={16} className="shrink-0 mt-0.5 text-rose-500" />
-                    <span>{status.message}</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block text-[10px] font-mono font-bold text-slate-400 uppercase tracking-[0.15em]">Full Name</label>
@@ -271,11 +249,11 @@ export default function Contact() {
 
               <button
                 type="submit"
-                disabled={status.type === 'loading'}
+                disabled={isLoading}
                 className="w-full text-white font-bold p-4 rounded-xl transition-all hover:-translate-y-0.5 shadow-[0_4px_16px_rgba(255,95,46,0.35)] hover:shadow-[0_6px_20px_rgba(255,95,46,0.45)] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 style={{ background: GRADIENT }}
               >
-                {status.type === 'loading' ? (
+                {isLoading ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
                     <span>Sending…</span>

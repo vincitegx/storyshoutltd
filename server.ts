@@ -5,7 +5,7 @@ import fs from 'fs';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { createServer as createViteServer } from 'vite';
 import {
   initDb,
@@ -26,58 +26,29 @@ const PORT = 3000;
 
 // ── Mail engine ──────────────────────────────────────────────────────────────
 const MAIL_RECIPIENT = 'infos@storyshoutltd.com';
+const MAIL_FROM = 'StoryShout Limited <infos@storyshoutltd.com>';
 
-const mailer = nodemailer.createTransport({
-  host: 'smtp.zoho.com',
-  port: 465,
-  secure: true, // SSL/TLS — more reliable than STARTTLS (port 587) on most hosts
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
-  console.warn('[Mailer] WARNING: MAIL_USER or MAIL_PASS not set in .env — emails will fail.');
+if (!process.env.RESEND_API_KEY) {
+  console.warn('[Mailer] WARNING: RESEND_API_KEY not set in .env — emails will fail.');
 } else {
-  console.log(`[Mailer] Configured for ${process.env.MAIL_USER} via smtp.zoho.com:465 (SSL)`);
+  console.log('[Mailer] Resend configured — sending via HTTPS API (no SMTP port required).');
 }
 
-function mailFrom(): string {
-  // Authenticate as David, but send as the Info address if preferred
-  // Ensure David has 'Send As' permissions for MAIL_RECIPIENT in Zoho settings.
-  const fromName = "StoryShout Limited";
-  const fromAddress = MAIL_RECIPIENT; 
-  return `"${fromName}" <${fromAddress}>`;
-}
-
-async function sendMailAsync(opts: nodemailer.SendMailOptions, retries = 3, delayMs = 2000): Promise<void> {
-  // Only retry on genuine connection-level errors, not auth failures or SMTP errors
-  const RETRYABLE_CODES = new Set(['ECONNECTION', 'ETIMEDOUT', 'ESOCKETTIMEDOUT', 'ECONNRESET', 'EPIPE']);
-
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      await mailer.sendMail(opts);
-      console.log(`[Mailer] Email sent successfully on attempt ${attempt}`);
-      return;
-    } catch (err: any) {
-      const isRetryable = RETRYABLE_CODES.has(err.code);
-      if (attempt < retries && isRetryable) {
-        console.warn(`[Mailer] Attempt ${attempt} failed (${err.code}: ${err.message}). Retrying in ${delayMs}ms...`);
-        await new Promise(resolve => setTimeout(resolve, delayMs));
-        delayMs *= 2; // exponential backoff
-      } else {
-        console.error(`[Mailer] Failed to send after ${attempt} attempt(s): [${err.code || 'NO_CODE'}] ${err.message}`);
-        throw err;
-      }
-    }
+async function sendMailAsync(opts: { to: string; subject: string; html: string; replyTo?: string }): Promise<void> {
+  const { error } = await resend.emails.send({
+    from: MAIL_FROM,
+    to: opts.to,
+    subject: opts.subject,
+    html: opts.html,
+    replyTo: opts.replyTo,
+  });
+  if (error) {
+    console.error(`[Mailer] Failed to send: ${error.message}`);
+    throw new Error(error.message);
   }
+  console.log('[Mailer] Email sent successfully via Resend.');
 }
 
 function escHtml(s: string): string {
@@ -219,7 +190,6 @@ async function startServer() {
       );
       // Fire-and-forget with retry; don't block the response
       sendMailAsync({
-        from: mailFrom(),
         to: MAIL_RECIPIENT,
         replyTo: email,
         subject: `[Contact] ${subject}`,
@@ -248,7 +218,6 @@ async function startServer() {
       await dbRun('INSERT INTO subscribe_emails (email, created_at) VALUES (?, ?)', [email, createdAt]);
       // Fire-and-forget with retry; don't block the response
       sendMailAsync({
-        from: mailFrom(),
         to: MAIL_RECIPIENT,
         subject: `[Newsletter] New Subscriber: ${email}`,
         html: buildSubscribeEmailHtml(email),
