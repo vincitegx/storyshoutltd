@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -10,6 +10,7 @@ import BlogPost from './pages/BlogPost';
 import Music from './pages/Music';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import { ToastProvider } from './components/Toast';
 
 declare global {
   interface Window { __SUBDOMAIN__?: string; }
@@ -21,25 +22,13 @@ function getSubdomain(): string {
 }
 
 function LabelSite() {
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const saved = localStorage.getItem('storyshout_dark_mode');
-    return saved ? saved === 'true' : true;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('storyshout_dark_mode', String(darkMode));
-    const root = document.documentElement;
-    if (darkMode) root.classList.add('dark');
-    else root.classList.remove('dark');
-  }, [darkMode]);
-
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
           element={
-            <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+            <Layout>
               <Music />
             </Layout>
           }
@@ -53,28 +42,14 @@ function LabelSite() {
 export default function App() {
   if (getSubdomain() === 'label') return <LabelSite />;
 
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const saved = localStorage.getItem('storyshout_dark_mode');
-    return saved ? saved === 'true' : true;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('storyshout_dark_mode', String(darkMode));
-    const root = document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [darkMode]);
-
   return (
-    <BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
       <Routes>
         <Route
           path="/"
           element={
-            <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+            <Layout>
               <Home />
             </Layout>
           }
@@ -82,7 +57,7 @@ export default function App() {
         <Route
           path="/features"
           element={
-            <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+            <Layout>
               <Software />
             </Layout>
           }
@@ -90,7 +65,7 @@ export default function App() {
         <Route
           path="/about"
           element={
-            <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+            <Layout>
               <About />
             </Layout>
           }
@@ -98,13 +73,13 @@ export default function App() {
         <Route
           path="/contact"
           element={
-            <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+            <Layout>
               <Contact />
             </Layout>
           }
         />
-        <Route path="/blog" element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}><Blog /></Layout>} />
-        <Route path="/blog/:slug" element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}><BlogPost /></Layout>} />
+        <Route path="/blog" element={<Layout><Blog /></Layout>} />
+        <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
 
         {/* Legacy /software redirect */}
         <Route path="/software" element={<Navigate to="/features" replace />} />
@@ -115,5 +90,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+    </ToastProvider>
   );
 }

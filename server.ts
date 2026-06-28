@@ -1,9 +1,11 @@
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
+import nodemailer from 'nodemailer';
 import { createServer as createViteServer } from 'vite';
 import {
   initDb,
@@ -15,11 +17,141 @@ import {
   PricingPlan,
   MusicRelease,
   Artist,
-  ContactMessage
+  ContactMessage,
+  SubscribeEmail
 } from './server/db.ts';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'storyshout_super_secret_key_2026';
 const PORT = 3000;
+
+// ── Mail engine ──────────────────────────────────────────────────────────────
+const MAIL_RECIPIENT = 'infos@storyshoutltd.com';
+
+const mailer = nodemailer.createTransport({
+  pool: true, // Reuse connections to prevent Zoho handshaking timeouts
+  host: 'smtp.zoho.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+  connectionTimeout: 30000, // Increased timeout for slower handshakes
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
+  maxConnections: 3,
+  maxMessages: 100,
+  tls: {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false,
+  },
+});
+
+if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+  console.warn('[Mailer] WARNING: MAIL_USER or MAIL_PASS not set in .env — emails will fail.');
+} else {
+  console.log(`[Mailer] Configured for ${process.env.MAIL_USER} via smtp.zoho.com:465`);
+}
+
+function mailFrom(): string {
+  // Authenticate as David, but send as the Info address if preferred
+  // Ensure David has 'Send As' permissions for MAIL_RECIPIENT in Zoho settings.
+  const fromName = "StoryShout Limited";
+  const fromAddress = MAIL_RECIPIENT; 
+  return `"${fromName}" <${fromAddress}>`;
+}
+
+async function sendMailAsync(opts: nodemailer.SendMailOptions, retries = 3, delayMs = 2000): Promise<void> {
+  // Only retry on genuine connection-level errors, not auth failures or SMTP errors
+  const RETRYABLE_CODES = new Set(['ECONNECTION', 'ETIMEDOUT', 'ESOCKETTIMEDOUT', 'ECONNRESET', 'EPIPE']);
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await mailer.sendMail(opts);
+      console.log(`[Mailer] Email sent successfully on attempt ${attempt}`);
+      return;
+    } catch (err: any) {
+      const isRetryable = RETRYABLE_CODES.has(err.code);
+      if (attempt < retries && isRetryable) {
+        console.warn(`[Mailer] Attempt ${attempt} failed (${err.code}: ${err.message}). Retrying in ${delayMs}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        delayMs *= 2; // exponential backoff
+      } else {
+        console.error(`[Mailer] Failed to send after ${attempt} attempt(s): [${err.code || 'NO_CODE'}] ${err.message}`);
+        throw err;
+      }
+    }
+  }
+}
+
+function escHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function buildContactEmailHtml(d: { name: string; email: string; subject: string; message: string }): string {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F5F0EC;font-family:Inter,Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EC;padding:40px 16px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;max-width:600px">
+<tr><td style="background:#1A0F08;padding:28px 36px">
+  <span style="color:#fff;font-size:17px;font-weight:800;letter-spacing:-0.4px">Story<span style="color:#FF5F2E">Shout</span> Limited</span>
+</td></tr>
+<tr><td style="background:#FF5F2E;padding:12px 36px">
+  <p style="margin:0;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase">New Contact Form Submission</p>
+</td></tr>
+<tr><td style="padding:32px 36px">
+  <table width="100%" cellpadding="0" cellspacing="0">
+  <tr><td style="padding-bottom:18px;border-bottom:1px solid #EDE8E3">
+    <p style="margin:0 0 3px;font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.1em">From</p>
+    <p style="margin:0;font-size:15px;font-weight:600;color:#1A0F08">${escHtml(d.name)}</p>
+    <a href="mailto:${escHtml(d.email)}" style="color:#FF5F2E;font-size:13px;text-decoration:none">${escHtml(d.email)}</a>
+  </td></tr>
+  <tr><td style="padding:18px 0;border-bottom:1px solid #EDE8E3">
+    <p style="margin:0 0 3px;font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.1em">Subject</p>
+    <p style="margin:0;font-size:15px;font-weight:600;color:#1A0F08">${escHtml(d.subject)}</p>
+  </td></tr>
+  <tr><td style="padding-top:18px">
+    <p style="margin:0 0 10px;font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.1em">Message</p>
+    <div style="background:#F9F6F3;border-radius:10px;padding:18px;font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap">${escHtml(d.message)}</div>
+  </td></tr>
+  </table>
+</td></tr>
+<tr><td style="background:#F9F6F3;padding:16px 36px;border-top:1px solid #EDE8E3">
+  <p style="margin:0;font-size:10px;color:#9CA3AF;text-align:center">StoryShout Limited &mdash; Lekki Phase I, Lagos, Nigeria &mdash; RC: 9591364</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+function buildSubscribeEmailHtml(email: string): string {
+  const time = new Date().toLocaleString('en-GB', { timeZone: 'Africa/Lagos' });
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F5F0EC;font-family:Inter,Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EC;padding:40px 16px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;max-width:600px">
+<tr><td style="background:#1A0F08;padding:28px 36px">
+  <span style="color:#fff;font-size:17px;font-weight:800;letter-spacing:-0.4px">Story<span style="color:#FF5F2E">Shout</span> Limited</span>
+</td></tr>
+<tr><td style="background:#FF5F2E;padding:12px 36px">
+  <p style="margin:0;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase">New Newsletter Subscriber</p>
+</td></tr>
+<tr><td style="padding:32px 36px">
+  <p style="margin:0 0 6px;font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.1em">Email Address</p>
+  <p style="margin:0 0 16px;font-size:17px;font-weight:700;color:#1A0F08">${escHtml(email)}</p>
+  <p style="margin:0;font-size:13px;color:#6B7280">Subscribed at ${time} (WAT)</p>
+</td></tr>
+<tr><td style="background:#F9F6F3;padding:16px 36px;border-top:1px solid #EDE8E3">
+  <p style="margin:0;font-size:10px;color:#9CA3AF;text-align:center">StoryShout Limited &mdash; Lekki Phase I, Lagos, Nigeria</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
 
 async function startServer() {
   const app = express();
@@ -89,9 +221,47 @@ async function startServer() {
          VALUES (?, ?, ?, ?, ?, 'Unread')`,
         [name, email, subject, message, createdAt]
       );
+      // Fire-and-forget with retry; don't block the response
+      sendMailAsync({
+        from: mailFrom(),
+        to: MAIL_RECIPIENT,
+        replyTo: email,
+        subject: `[Contact] ${subject}`,
+        html: buildContactEmailHtml({ name, email, subject, message }),
+      }).catch(() => {
+        // Mail failure is non-blocking; the message is already saved to DB
+      });
       res.json({ success: true, messageId: result.lastID, message: 'Message sent successfully.' });
     } catch (e: any) {
       res.status(500).json({ error: e.message || 'Failed to submit contact message.' });
+    }
+  });
+
+  // Newsletter subscribe
+  app.post('/api/subscribe', async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ error: 'A valid email address is required.' });
+      }
+      const existing = await dbGet<SubscribeEmail>('SELECT * FROM subscribe_emails WHERE email = ?', [email]);
+      if (existing) {
+        return res.json({ success: true, message: "You're already on the list!" });
+      }
+      const createdAt = new Date().toISOString();
+      await dbRun('INSERT INTO subscribe_emails (email, created_at) VALUES (?, ?)', [email, createdAt]);
+      // Fire-and-forget with retry; don't block the response
+      sendMailAsync({
+        from: mailFrom(),
+        to: MAIL_RECIPIENT,
+        subject: `[Newsletter] New Subscriber: ${email}`,
+        html: buildSubscribeEmailHtml(email),
+      }).catch(() => {
+        // Mail failure is non-blocking; the subscription is already saved to DB
+      });
+      res.json({ success: true, message: "You're subscribed! Insights coming your way." });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to subscribe.' });
     }
   });
 
@@ -420,6 +590,26 @@ async function startServer() {
     try {
       const { id } = req.params;
       await dbRun('DELETE FROM contact_messages WHERE id = ?', [id]);
+      res.json({ success: true });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // Newsletter subscribers list
+  app.get('/api/admin/subscribers', authenticateToken, async (req, res) => {
+    try {
+      const subscribers = await dbAll<SubscribeEmail>('SELECT * FROM subscribe_emails ORDER BY id DESC');
+      res.json(subscribers);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  app.delete('/api/admin/subscribers/:id', authenticateToken, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await dbRun('DELETE FROM subscribe_emails WHERE id = ?', [id]);
       res.json({ success: true });
     } catch (e: any) {
       res.status(500).json({ error: e.message });

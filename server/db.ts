@@ -58,6 +58,12 @@ export interface ContactMessage {
   status: string;
 }
 
+export interface SubscribeEmail {
+  id?: number;
+  email: string;
+  created_at: string;
+}
+
 interface DBState {
   users: User[];
   software_features: SoftwareFeature[];
@@ -65,6 +71,7 @@ interface DBState {
   music_releases: MusicRelease[];
   artists: Artist[];
   contact_messages: ContactMessage[];
+  subscribe_emails: SubscribeEmail[];
   lastIds: Record<string, number>;
 }
 
@@ -75,6 +82,7 @@ let dbState: DBState = {
   music_releases: [],
   artists: [],
   contact_messages: [],
+  subscribe_emails: [],
   lastIds: {
     users: 0,
     software_features: 0,
@@ -82,6 +90,7 @@ let dbState: DBState = {
     music_releases: 0,
     artists: 0,
     contact_messages: 0,
+    subscribe_emails: 0,
   }
 };
 
@@ -287,6 +296,7 @@ export async function initDb(): Promise<any> {
       if (!dbState.music_releases) dbState.music_releases = [];
       if (!dbState.artists) dbState.artists = [];
       if (!dbState.contact_messages) dbState.contact_messages = [];
+      if (!dbState.subscribe_emails) dbState.subscribe_emails = [];
       if (!dbState.lastIds) {
         dbState.lastIds = {
           users: Math.max(0, ...dbState.users.map(u => u.id)),
@@ -295,8 +305,10 @@ export async function initDb(): Promise<any> {
           music_releases: Math.max(0, ...dbState.music_releases.map(r => r.id || 0)),
           artists: Math.max(0, ...dbState.artists.map(a => a.id || 0)),
           contact_messages: Math.max(0, ...dbState.contact_messages.map(m => m.id || 0)),
+          subscribe_emails: Math.max(0, ...dbState.subscribe_emails.map(s => s.id || 0)),
         };
       }
+      if (!dbState.lastIds.subscribe_emails) dbState.lastIds.subscribe_emails = 0;
     } catch (err) {
       console.error('Error loading JSON DB, resetting:', err);
     }
@@ -344,6 +356,12 @@ export async function dbAll<T>(sql: string, params: any[] = []): Promise<T[]> {
     return list as unknown as T[];
   }
 
+  if (norm.startsWith('select * from subscribe_emails')) {
+    const list = [...dbState.subscribe_emails];
+    list.sort((a, b) => (b.id || 0) - (a.id || 0));
+    return list as unknown as T[];
+  }
+
   throw new Error(`[JSON Database] dbAll query not supported/mapped: ${sql}`);
 }
 
@@ -381,6 +399,15 @@ export async function dbGet<T>(sql: string, params: any[] = []): Promise<T | und
     return { cnt: dbState.contact_messages.length } as unknown as T;
   }
 
+  if (norm.startsWith('select * from subscribe_emails where email = ?')) {
+    const email = params[0];
+    const sub = dbState.subscribe_emails.find(s => s.email.toLowerCase() === email.toLowerCase());
+    return sub as unknown as T;
+  }
+  if (norm.startsWith('select count(*) as cnt from subscribe_emails')) {
+    return { cnt: dbState.subscribe_emails.length } as unknown as T;
+  }
+
   throw new Error(`[JSON Database] dbGet query not supported/mapped: ${sql}`);
 }
 
@@ -389,6 +416,20 @@ export async function dbRun(sql: string, params: any[] = []): Promise<{ lastID: 
 
   if (norm.startsWith('pragma')) {
     return { lastID: 0, changes: 0 };
+  }
+
+  // INSERT INTO subscribe_emails
+  if (norm.startsWith('insert into subscribe_emails')) {
+    const [email, created_at] = params;
+    dbState.lastIds.subscribe_emails = (dbState.lastIds.subscribe_emails || 0) + 1;
+    const newSub: SubscribeEmail = {
+      id: dbState.lastIds.subscribe_emails,
+      email,
+      created_at
+    };
+    dbState.subscribe_emails.push(newSub);
+    saveDb();
+    return { lastID: newSub.id!, changes: 1 };
   }
 
   // INSERT INTO contact_messages
