@@ -28,21 +28,17 @@ const PORT = 3000;
 const MAIL_RECIPIENT = 'infos@storyshoutltd.com';
 
 const mailer = nodemailer.createTransport({
-  pool: true, // Reuse connections to prevent Zoho handshaking timeouts
   host: 'smtp.zoho.com',
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true, // SSL/TLS — more reliable than STARTTLS (port 587) on most hosts
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
-  connectionTimeout: 30000, // Increased timeout for slower handshakes
+  connectionTimeout: 30000,
   greetingTimeout: 30000,
   socketTimeout: 30000,
-  maxConnections: 3,
-  maxMessages: 100,
   tls: {
-    ciphers: 'SSLv3',
     rejectUnauthorized: false,
   },
 });
@@ -50,7 +46,7 @@ const mailer = nodemailer.createTransport({
 if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
   console.warn('[Mailer] WARNING: MAIL_USER or MAIL_PASS not set in .env — emails will fail.');
 } else {
-  console.log(`[Mailer] Configured for ${process.env.MAIL_USER} via smtp.zoho.com:465`);
+  console.log(`[Mailer] Configured for ${process.env.MAIL_USER} via smtp.zoho.com:465 (SSL)`);
 }
 
 function mailFrom(): string {
