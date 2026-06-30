@@ -24,6 +24,105 @@ import {
 const JWT_SECRET = process.env.JWT_SECRET || 'storyshout_super_secret_key_2026';
 const PORT = 3000;
 
+// ── OG / Social preview meta injection ───────────────────────────────────────
+const BASE_URL = 'https://storyshoutltd.com';
+const LABEL_URL = 'https://label.storyshoutltd.com';
+const OG_IMAGE = `${BASE_URL}/og-image.svg`;
+
+interface RouteMeta {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+}
+
+const ROUTE_META: Record<string, RouteMeta> = {
+  '/': {
+    title: 'StoryShout — Turn Your Audience Into Your Marketing Engine',
+    description: 'StoryShout turns everyday users into micro-influencers who share your content to trusted social circles. Real reach. Verified engagement. Affordable for every startup and creator.',
+    url: `${BASE_URL}/`,
+  },
+  '/features': {
+    title: 'Platform Features — Campaign Engine, Coin Wallet & Shouter Tiers | StoryShout',
+    description: 'Explore the StoryShout platform: campaign builder, engagement verification, Shouter earning tiers, and transparent pricing. Built for brands and creators who want real reach.',
+    url: `${BASE_URL}/features`,
+  },
+  '/about': {
+    title: 'About StoryShout — Authentic Word-of-Mouth at Scale',
+    description: 'StoryShout was built in Lagos to make authentic audience promotion accessible to every startup, creator, and small brand. Real people, real circles, real results.',
+    url: `${BASE_URL}/about`,
+  },
+  '/contact': {
+    title: 'Contact StoryShout — Join the Beta or Request Early Access',
+    description: "Ready to launch your first campaign or become a Shouter? Reach out and we'll respond within 24 hours. Join the waitlist for early access.",
+    url: `${BASE_URL}/contact`,
+  },
+  '/blog': {
+    title: 'Blog — Word-of-Mouth, Growth & Creator Marketing | StoryShout',
+    description: 'Practical guides and insights for startups, creators, and small brands on audience promotion, authentic engagement, and making every share count.',
+    url: `${BASE_URL}/blog`,
+  },
+};
+
+const BLOG_POST_META: Record<string, Pick<RouteMeta, 'title' | 'description'>> = {
+  'why-influencer-marketing-is-broken': {
+    title: 'Why Influencer Marketing Is Broken — And What Should Replace It | StoryShout',
+    description: "Paying celebrities for shoutouts is expensive, inconsistent, and often fake. There's a better way to get real people talking about your brand.",
+  },
+  'what-is-audience-promotion': {
+    title: 'What Is Audience Promotion? The One-to-One-to-Many Model Explained | StoryShout',
+    description: 'Forget cold reach. Audience promotion turns your existing supporters into your marketing team. Here\'s how the model works and why it\'s the future of brand growth.',
+  },
+  'startup-marketing-without-big-budget': {
+    title: 'How Startups Can Compete With Big Brands — Without a Big Budget | StoryShout',
+    description: "When you can't outspend the competition, outsmart them. How startups use audience promotion to reach thousands through trusted word-of-mouth.",
+  },
+  'indie-musician-promotion-guide': {
+    title: "The Indie Musician's Guide to Promotion Without a Label Budget | StoryShout",
+    description: "You make great music. But getting heard without a major label is hard. Here's how independent artists are turning fans into promoters.",
+  },
+  'real-engagement-vs-vanity-metrics': {
+    title: 'Real Engagement vs. Vanity Metrics: Why Shares Matter More Than Likes | StoryShout',
+    description: 'A thousand likes from strangers means nothing. One share to a trusted circle is worth more. Why shares are the metric that actually predicts growth.',
+  },
+};
+
+function resolveRouteMeta(pathname: string): RouteMeta {
+  if (ROUTE_META[pathname]) return ROUTE_META[pathname];
+  const blogMatch = pathname.match(/^\/blog\/([^/]+)\/?$/);
+  if (blogMatch) {
+    const slug = blogMatch[1];
+    const post = BLOG_POST_META[slug];
+    if (post) {
+      return { ...post, url: `${BASE_URL}/blog/${slug}` };
+    }
+    return {
+      title: 'Blog — StoryShout Insights on Growth & Word-of-Mouth Marketing',
+      description: 'Practical playbooks and ideas for startups, creators, and small brands on authentic growth and audience promotion.',
+      url: `${BASE_URL}${pathname}`,
+    };
+  }
+  return ROUTE_META['/'];
+}
+
+function injectOgMeta(html: string, meta: RouteMeta): string {
+  const img = meta.image ?? OG_IMAGE;
+  const safeTitle = escHtml(meta.title);
+  const safeDesc = escHtml(meta.description);
+  return html
+    .replace(/<title>[^<]*<\/title>/, `<title>${safeTitle}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/g, `$1${safeDesc}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/g, `$1${meta.url}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/g, `$1${meta.url}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/g, `$1${safeTitle}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/g, `$1${safeDesc}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/g, `$1${img}$2`)
+    .replace(/(<meta name="twitter:url" content=")[^"]*(")/g, `$1${meta.url}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/g, `$1${safeTitle}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/g, `$1${safeDesc}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/g, `$1${img}$2`);
+}
+
 // ── Mail engine ──────────────────────────────────────────────────────────────
 const MAIL_RECIPIENT = 'infos@storyshoutltd.com';
 const MAIL_FROM = 'StoryShout Limited <infos@storyshoutltd.com>';
@@ -604,15 +703,26 @@ async function startServer() {
     app.get('*', (req: any, res) => {
       let html = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
       html = html.replace('</head>', `<script>window.__SUBDOMAIN__="${req.subdomain}";</script></head>`);
+
       if (req.subdomain === 'label') {
+        const labelTitle = escHtml('StoryShout Records \u2014 Independent Music Label | Lagos');
+        const labelDesc = escHtml('Independent alternative music label from Lekki, Lagos. Stream our latest releases and explore the artist roster.');
         html = html
-          .replace(/(<link rel="canonical" href=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
-          .replace(/(<meta property="og:url" content=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
-          .replace(/(<meta property="og:title" content=")[^"]*(")/, '$1StoryShout Records \u2014 Independent Music Label | Lagos$2')
-          .replace(/(<meta name="og:description" content=")[^"]*(")/, '$1Independent alternative music label from Lekki, Lagos. Stream releases and explore our artist roster.$2')
-          .replace(/(<meta name="twitter:url" content=")[^"]*(")/, '$1https://label.storyshoutltd.com/$2')
-          .replace(/(<meta name="twitter:title" content=")[^"]*(")/, '$1StoryShout Records \u2014 Independent Music Label | Lagos$2');
+          .replace(/<title>[^<]*<\/title>/, `<title>${labelTitle}</title>`)
+          .replace(/(<meta name="description" content=")[^"]*(")/g, `$1${labelDesc}$2`)
+          .replace(/(<link rel="canonical" href=")[^"]*(")/g, `$1${LABEL_URL}/$2`)
+          .replace(/(<meta property="og:url" content=")[^"]*(")/g, `$1${LABEL_URL}/$2`)
+          .replace(/(<meta property="og:title" content=")[^"]*(")/g, `$1${labelTitle}$2`)
+          .replace(/(<meta property="og:description" content=")[^"]*(")/g, `$1${labelDesc}$2`)
+          .replace(/(<meta property="og:image" content=")[^"]*(")/g, `$1${OG_IMAGE}$2`)
+          .replace(/(<meta name="twitter:url" content=")[^"]*(")/g, `$1${LABEL_URL}/$2`)
+          .replace(/(<meta name="twitter:title" content=")[^"]*(")/g, `$1${labelTitle}$2`)
+          .replace(/(<meta name="twitter:description" content=")[^"]*(")/g, `$1${labelDesc}$2`)
+          .replace(/(<meta name="twitter:image" content=")[^"]*(")/g, `$1${OG_IMAGE}$2`);
+      } else {
+        html = injectOgMeta(html, resolveRouteMeta(req.path));
       }
+
       res.send(html);
     });
   }
