@@ -1,316 +1,101 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
 
-    <!-- ── LEFT PANEL: Orange brand gradient (matches .si-visual in signin.css) ── -->
-    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="90%" y2="100%">
+    <!-- Full-panel orange brand gradient (same as .si-visual) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="90%" y2="100%">
       <stop offset="0%"   style="stop-color:#FF5F2E"/>
       <stop offset="55%"  style="stop-color:#FF7C00"/>
       <stop offset="100%" style="stop-color:#FFB830"/>
     </linearGradient>
 
-    <!-- ── Orange brand CTA gradient (matches .si-cta) ── -->
-    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   style="stop-color:#FF5F2E"/>
-      <stop offset="100%" style="stop-color:#FF8A00"/>
-    </linearGradient>
-
-    <!-- ── White-to-warm-gold gradient for italic headline text (matches .si-vis-h1 em) ── -->
-    <linearGradient id="whiteGoldGrad" x1="0" y1="0" x2="500" y2="0" gradientUnits="userSpaceOnUse">
+    <!-- White-to-warm-gold for the em tagline (same as .si-vis-h1 em) -->
+    <linearGradient id="goldGrad" x1="190" y1="0" x2="1140" y2="0" gradientUnits="userSpaceOnUse">
       <stop offset="0%"   style="stop-color:#FFFFFF;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#FFD282;stop-opacity:0.96"/>
+      <stop offset="100%" style="stop-color:#FFD282;stop-opacity:0.94"/>
     </linearGradient>
 
-    <!-- ── Story card gradients (exact CSS values from .si-card-bg-*) ── -->
-    <linearGradient id="card1Grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   style="stop-color:#1e40af"/>
-      <stop offset="100%" style="stop-color:#7c3aed"/>
-    </linearGradient>
-    <linearGradient id="card2Grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   style="stop-color:#059669"/>
-      <stop offset="100%" style="stop-color:#0d9488"/>
-    </linearGradient>
-    <linearGradient id="card3Grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   style="stop-color:#d97706"/>
-      <stop offset="100%" style="stop-color:#92400e"/>
-    </linearGradient>
-
-    <!-- ── Badge gradient for right panel ── -->
-    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   style="stop-color:#FF5F2E;stop-opacity:0.12"/>
-      <stop offset="100%" style="stop-color:#FF8A00;stop-opacity:0.12"/>
-    </linearGradient>
-
-    <!-- ── Left panel radial overlay: white glow top-right ── -->
-    <radialGradient id="panelGlowTR" cx="88%" cy="14%" r="55%">
-      <stop offset="0%"   style="stop-color:#FFFFFF;stop-opacity:0.18"/>
+    <!-- White highlight top-right (same as .si-visual::before) -->
+    <radialGradient id="glowTR" cx="90%" cy="10%" r="55%">
+      <stop offset="0%"   style="stop-color:#FFFFFF;stop-opacity:0.20"/>
       <stop offset="100%" style="stop-color:#FF7C00;stop-opacity:0"/>
     </radialGradient>
 
-    <!-- ── Left panel radial overlay: dark shadow bottom-left ── -->
-    <radialGradient id="panelShadowBL" cx="18%" cy="88%" r="50%">
-      <stop offset="0%"   style="stop-color:#000000;stop-opacity:0.12"/>
+    <!-- Dark depth bottom-left (same as .si-visual::before) -->
+    <radialGradient id="depthBL" cx="10%" cy="92%" r="52%">
+      <stop offset="0%"   style="stop-color:#000000;stop-opacity:0.18"/>
       <stop offset="100%" style="stop-color:#FF7C00;stop-opacity:0"/>
     </radialGradient>
 
-    <!-- ── Card drop-shadow filter ── -->
-    <filter id="cardShadow" x="-28%" y="-18%" width="156%" height="148%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="blur"/>
-      <feOffset dx="0" dy="10" in="blur" result="offset"/>
-      <feComponentTransfer in="offset" result="shadow">
-        <feFuncA type="linear" slope="0.22"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode in="shadow"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <!-- ── Glow filter for right-panel "S" logo mark ── -->
-    <filter id="sGlow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
-      <feOffset dx="0" dy="3" in="blur" result="offset"/>
-      <feFlood flood-color="#FF5F2E" flood-opacity="0.38" result="color"/>
-      <feComposite in="color" in2="offset" operator="in" result="glow"/>
-      <feMerge>
-        <feMergeNode in="glow"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <!-- Warm centre bloom -->
+    <radialGradient id="bloom" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   style="stop-color:#FFFFFF;stop-opacity:0.06"/>
+      <stop offset="100%" style="stop-color:#FF7C00;stop-opacity:0"/>
+    </radialGradient>
 
   </defs>
 
-  <!-- ════════════════════════════════════════════════════════════════
-       LEFT PANEL — Orange brand panel (mirrors .si-visual)
-  ════════════════════════════════════════════════════════════════ -->
+  <!-- ── Background ── -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#glowTR)"/>
+  <rect width="1200" height="630" fill="url(#depthBL)"/>
+  <rect width="1200" height="630" fill="url(#bloom)"/>
 
-  <rect x="0" y="0" width="580" height="630" fill="url(#panelGrad)"/>
+  <!-- ── Subtle dot grid — very faint, adds depth without clutter ── -->
+  <g opacity="0.10" fill="#FFFFFF">
+    <!-- Top-left cluster -->
+    <circle cx="72"  cy="66"  r="3"/> <circle cx="112" cy="66"  r="3"/> <circle cx="152" cy="66"  r="3"/>
+    <circle cx="72"  cy="106" r="3"/> <circle cx="112" cy="106" r="3"/> <circle cx="152" cy="106" r="3"/>
+    <!-- Bottom-right cluster -->
+    <circle cx="1048" cy="524" r="3"/> <circle cx="1088" cy="524" r="3"/> <circle cx="1128" cy="524" r="3"/>
+    <circle cx="1048" cy="564" r="3"/> <circle cx="1088" cy="564" r="3"/> <circle cx="1128" cy="564" r="3"/>
+  </g>
 
-  <!-- Radial overlays matching .si-visual::before -->
-  <rect x="0" y="0" width="580" height="630" fill="url(#panelGlowTR)"/>
-  <rect x="0" y="0" width="580" height="630" fill="url(#panelShadowBL)"/>
+  <!-- ── Logo mark: "S" in frosted rounded square (mirrors .si-plm) ── -->
+  <rect x="190" y="174" width="56" height="56" rx="15"
+        fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+  <text x="218" y="214"
+        font-family="'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        fill="#FFFFFF" text-anchor="middle">S</text>
 
-  <!-- ── Panel logo mark (mirrors .si-plm) ── -->
-  <!-- "S" in frosted rounded square -->
-  <rect x="44" y="40" width="36" height="36" rx="10"
-        fill="rgba(255,255,255,0.20)" stroke="rgba(255,255,255,0.36)" stroke-width="1.5"/>
-  <text x="62" y="64" font-family="'Arial Black', Arial, sans-serif"
-        font-size="18" font-weight="900" fill="#FFFFFF" text-anchor="middle">S</text>
-  <!-- Wordmark: story (weight 600) + shout (weight 800, full white) -->
-  <text x="89" y="64" font-family="Arial, Helvetica, sans-serif"
-        font-size="18" letter-spacing="0.04em">
-    <tspan font-weight="600" fill="rgba(255,255,255,0.80)">story</tspan><tspan font-weight="800" fill="#FFFFFF">shout</tspan>
+  <!-- ── Wordmark: storyshout (mirrors .si-panel-logo) ── -->
+  <text x="262" y="212"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="28" letter-spacing="0.04em">
+    <tspan font-weight="600" fill="rgba(255,255,255,0.82)">story</tspan><tspan font-weight="800" fill="#FFFFFF">shout</tspan>
   </text>
 
-  <!-- ── Three floating story cards (mirrors .si-card-scene) ── -->
+  <!-- ── Kicker rule + label (mirrors .si-vis-kicker) ── -->
+  <line x1="190" y1="288" x2="216" y2="288"
+        stroke="rgba(255,255,255,0.50)" stroke-width="1.5"/>
+  <text x="226" y="292"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="13" font-weight="700" letter-spacing="0.10em"
+        fill="rgba(255,255,255,0.65)">AUDIENCE PROMOTION PLATFORM</text>
 
-  <!-- Card 1: blue-purple gradient, -8deg rotation -->
-  <!-- Center at (158, 230) -->
-  <g filter="url(#cardShadow)" transform="translate(158,230) rotate(-8)">
-    <rect x="-52" y="-88" width="104" height="176" rx="17"
-          fill="url(#card1Grad)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-    <!-- White inner highlight -->
-    <rect x="-52" y="-88" width="104" height="50" rx="17" fill="rgba(255,255,255,0.08)"/>
-    <!-- Avatar circle -->
-    <circle cx="-22" cy="-65" r="13" fill="rgba(255,255,255,0.24)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
-    <text x="-22" y="-61" font-family="Arial, sans-serif" font-size="10" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">B</text>
-    <!-- Brand meta -->
-    <text x="-4" y="-70" font-family="Arial, sans-serif" font-size="9" font-weight="700"
-          fill="rgba(255,255,255,0.95)">BeautyBae</text>
-    <text x="-4" y="-59" font-family="Arial, sans-serif" font-size="8"
-          fill="rgba(255,255,255,0.60)">TikTok Story</text>
-    <!-- Reach-dot + pill row -->
-    <rect x="-46" y="62" width="92" height="16" rx="8" fill="rgba(0,0,0,0.28)"/>
-    <circle cx="-32" cy="70" r="3.5" fill="#4ADE80"/>
-    <text x="-6" y="74" font-family="Arial, sans-serif" font-size="7.5" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">35 shouts · 190 reach</text>
-  </g>
-
-  <!-- Card 2: emerald-teal gradient, +4deg rotation -->
-  <!-- Center at (256, 215) -->
-  <g filter="url(#cardShadow)" transform="translate(256,215) rotate(4)">
-    <rect x="-52" y="-88" width="104" height="176" rx="17"
-          fill="url(#card2Grad)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-    <rect x="-52" y="-88" width="104" height="50" rx="17" fill="rgba(255,255,255,0.08)"/>
-    <circle cx="-22" cy="-65" r="13" fill="rgba(255,255,255,0.24)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
-    <text x="-22" y="-61" font-family="Arial, sans-serif" font-size="10" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">S</text>
-    <text x="-4" y="-70" font-family="Arial, sans-serif" font-size="9" font-weight="700"
-          fill="rgba(255,255,255,0.95)">SportsCo</text>
-    <text x="-4" y="-59" font-family="Arial, sans-serif" font-size="8"
-          fill="rgba(255,255,255,0.60)">Instagram Story</text>
-    <rect x="-46" y="62" width="92" height="16" rx="8" fill="rgba(0,0,0,0.28)"/>
-    <circle cx="-32" cy="70" r="3.5" fill="#4ADE80"/>
-    <text x="-6" y="74" font-family="Arial, sans-serif" font-size="7.5" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">22 shouts · 165 reach</text>
-  </g>
-
-  <!-- Card 3: amber-brown gradient, -12deg rotation -->
-  <!-- Center at (360, 232) -->
-  <g filter="url(#cardShadow)" transform="translate(360,232) rotate(-12)">
-    <rect x="-52" y="-88" width="104" height="176" rx="17"
-          fill="url(#card3Grad)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-    <rect x="-52" y="-88" width="104" height="50" rx="17" fill="rgba(255,255,255,0.08)"/>
-    <circle cx="-22" cy="-65" r="13" fill="rgba(255,255,255,0.24)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
-    <text x="-22" y="-61" font-family="Arial, sans-serif" font-size="10" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">F</text>
-    <text x="-4" y="-70" font-family="Arial, sans-serif" font-size="9" font-weight="700"
-          fill="rgba(255,255,255,0.95)">FoodHub</text>
-    <text x="-4" y="-59" font-family="Arial, sans-serif" font-size="8"
-          fill="rgba(255,255,255,0.60)">Facebook Story</text>
-    <rect x="-46" y="62" width="92" height="16" rx="8" fill="rgba(0,0,0,0.28)"/>
-    <circle cx="-32" cy="70" r="3.5" fill="#4ADE80"/>
-    <text x="-6" y="74" font-family="Arial, sans-serif" font-size="7.5" font-weight="700"
-          fill="#FFFFFF" text-anchor="middle">51 shouts · 240 reach</text>
-  </g>
-
-  <!-- ── Floating ambient tokens (mirrors .si-coin) ── -->
-  <!-- Token 1: top-right of card cluster -->
-  <circle cx="436" cy="116" r="16" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.36)" stroke-width="1.5"/>
-  <text x="436" y="121" font-family="Arial, sans-serif" font-size="12"
-        fill="rgba(255,255,255,0.84)" text-anchor="middle">★</text>
-
-  <!-- Token 2: left of card cluster -->
-  <circle cx="70" cy="210" r="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.30)" stroke-width="1.5" opacity="0.72"/>
-  <text x="70" y="215" font-family="Arial, sans-serif" font-size="11"
-        fill="rgba(255,255,255,0.80)" text-anchor="middle">◈</text>
-
-  <!-- Token 3: lower-right of cluster -->
-  <circle cx="444" cy="346" r="13" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.24)" stroke-width="1.5" opacity="0.58"/>
-  <text x="444" y="350" font-family="Arial, sans-serif" font-size="10"
-        fill="rgba(255,255,255,0.76)" text-anchor="middle">⚡</text>
-
-  <!-- ── Bottom copy block (mirrors .si-vis-copy) ── -->
-
-  <!-- Kicker line with preceding rule (matches .si-vis-kicker::before) -->
-  <line x1="44" y1="456" x2="64" y2="456" stroke="rgba(255,255,255,0.50)" stroke-width="1.5"/>
-  <text x="72" y="460" font-family="Arial, Helvetica, sans-serif"
-        font-size="11" font-weight="700" letter-spacing="0.09em"
-        fill="rgba(255,255,255,0.65)" text-transform="uppercase">EVERY STORY DESERVES A REAL AUDIENCE</text>
-
-  <!-- Headline line 1: "Your Story," — plain white (matches .si-vis-h1) -->
-  <text x="44" y="514"
+  <!-- ── Main headline line 1 (mirrors .si-vis-h1) ── -->
+  <text x="190" y="374"
         font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-        font-size="46" font-weight="900" letter-spacing="-0.035em"
+        font-size="80" font-weight="900" letter-spacing="-0.035em"
         fill="#FFFFFF">Your Story,</text>
 
-  <!-- Headline line 2: em text with white-to-gold gradient (matches .si-vis-h1 em) -->
-  <text x="44" y="566"
+  <!-- ── Main headline line 2 — white-to-gold gradient (mirrors em treatment) ── -->
+  <text x="190" y="468"
         font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-        font-size="46" font-weight="900" letter-spacing="-0.035em"
-        fill="url(#whiteGoldGrad)">Shared by Real People.</text>
+        font-size="80" font-weight="900" letter-spacing="-0.035em"
+        fill="url(#goldGrad)">Shared by Real People.</text>
 
-  <!-- ── Sub-text beneath headline ── -->
-  <text x="44" y="600"
+  <!-- ── Sub text (mirrors .si-vis-sub) ── -->
+  <text x="190" y="528"
         font-family="Arial, Helvetica, sans-serif"
-        font-size="13" fill="rgba(255,255,255,0.56)" letter-spacing="0.01em">
-    Brands get real reach · Shouters earn real coins
+        font-size="21" fill="rgba(255,255,255,0.60)" letter-spacing="0.01em">
+    Brands get real reach · Shouters earn real coins · Everyone wins
   </text>
 
-  <!-- ════════════════════════════════════════════════════════════════
-       PANEL SEPARATOR
-  ════════════════════════════════════════════════════════════════ -->
-  <rect x="580" y="0" width="2" height="630" fill="rgba(255,255,255,0.15)"/>
-
-  <!-- ════════════════════════════════════════════════════════════════
-       RIGHT PANEL — White form-side (mirrors .si-form-side)
-  ════════════════════════════════════════════════════════════════ -->
-  <rect x="582" y="0" width="618" height="630" fill="#FFFFFF"/>
-
-  <!-- ── Form-side logo (mirrors .si-form-logo) ── -->
-  <!-- Orange solid "S" mark (matches .si-flm) -->
-  <rect x="614" y="40" width="34" height="34" rx="9"
-        fill="#FF5F2E" filter="url(#sGlow)"/>
-  <text x="631" y="63" font-family="'Arial Black', Arial, sans-serif"
-        font-size="17" font-weight="900" fill="#FFFFFF" text-anchor="middle">S</text>
-  <!-- Wordmark on white (matches .si-form-logo-name) -->
-  <text x="657" y="63" font-family="Arial, Helvetica, sans-serif"
-        font-size="18" letter-spacing="0.04em">
-    <tspan font-weight="600" fill="#111827">story</tspan><tspan font-weight="800" fill="#FF5F2E">shout</tspan>
-  </text>
-
-  <!-- ── Small platform label (matches .si-vis-kicker style, inverted) ── -->
-  <text x="614" y="174"
+  <!-- ── Domain — bottom right ── -->
+  <text x="1010" y="590"
         font-family="Arial, Helvetica, sans-serif"
-        font-size="11" font-weight="700" letter-spacing="0.10em"
-        fill="#9CA3AF">AUDIENCE PROMOTION PLATFORM</text>
-
-  <!-- ── Main headline (mirrors .si-title) ── -->
-  <!-- Line 1: "Turn Your Audience" — near black -->
-  <text x="614" y="248"
-        font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-        font-size="54" font-weight="900" letter-spacing="-0.03em"
-        fill="#111827">Turn Your Audience</text>
-
-  <!-- Line 2: "Into Your Marketing" — near black -->
-  <text x="614" y="318"
-        font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-        font-size="54" font-weight="900" letter-spacing="-0.03em"
-        fill="#111827">Into Your Marketing</text>
-
-  <!-- Line 3: "Engine." — brand orange -->
-  <text x="614" y="388"
-        font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-        font-size="54" font-weight="900" letter-spacing="-0.03em"
-        fill="#FF5F2E">Engine.</text>
-
-  <!-- ── Sub text (mirrors .si-sub) ── -->
-  <text x="614" y="428"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="16" fill="#6B7280" letter-spacing="0.01em">
-    Affordable, authentic, and scalable — for every brand and creator.
-  </text>
-
-  <!-- ── Thin divider ── -->
-  <rect x="614" y="450" width="540" height="1" fill="#E5E7EB"/>
-
-  <!-- ── Platform stats row ── -->
-  <!-- Stat 1 -->
-  <text x="614" y="486"
-        font-family="'Arial Black', Arial, sans-serif"
-        font-size="22" font-weight="900" fill="#111827">5</text>
-  <text x="640" y="486"
-        font-family="Arial, sans-serif"
-        font-size="13" font-weight="600" fill="#6B7280"> Platforms</text>
-
-  <!-- Dot separator -->
-  <circle cx="742" cy="481" r="3" fill="#D1D5DB"/>
-
-  <!-- Stat 2 -->
-  <text x="756" y="486"
-        font-family="'Arial Black', Arial, sans-serif"
-        font-size="22" font-weight="900" fill="#111827">3</text>
-  <text x="782" y="486"
-        font-family="Arial, sans-serif"
-        font-size="13" font-weight="600" fill="#6B7280"> Shouter Tiers</text>
-
-  <!-- Dot separator -->
-  <circle cx="900" cy="481" r="3" fill="#D1D5DB"/>
-
-  <!-- Stat 3 -->
-  <text x="914" y="486"
-        font-family="'Arial Black', Arial, sans-serif"
-        font-size="22" font-weight="900" fill="#111827">4</text>
-  <text x="940" y="486"
-        font-family="Arial, sans-serif"
-        font-size="13" font-weight="600" fill="#6B7280"> Payment Gateways</text>
-
-  <!-- ── Beta badge (mirrors .si-cta button style) ── -->
-  <rect x="614" y="512" width="390" height="46" rx="12"
-        fill="#FF5F2E" fill-opacity="0.06"/>
-  <rect x="614" y="512" width="390" height="46" rx="12"
-        fill="none" stroke="#FF5F2E" stroke-width="1.2" stroke-opacity="0.28"/>
-  <!-- Pulse dot -->
-  <circle cx="640" cy="535" r="5" fill="#FF5F2E" opacity="0.88"/>
-  <circle cx="640" cy="535" r="9" fill="#FF5F2E" opacity="0.16"/>
-  <text x="656" y="540"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="13" font-weight="700" letter-spacing="0.08em"
-        fill="#FF5F2E">NOW IN BETA · ACCEPTING APPLICATIONS</text>
-
-  <!-- ── URL footer (matches muted faint style) ── -->
-  <text x="614" y="587"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="14" fill="#9CA3AF" letter-spacing="0.06em">storyshoutltd.com</text>
+        font-size="16" fill="rgba(255,255,255,0.38)" letter-spacing="0.08em"
+        text-anchor="middle">storyshoutltd.com</text>
 
 </svg>
