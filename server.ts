@@ -27,7 +27,7 @@ const PORT = 3000;
 // ── OG / Social preview meta injection ───────────────────────────────────────
 const BASE_URL = 'https://storyshoutltd.com';
 const LABEL_URL = 'https://label.storyshoutltd.com';
-const OG_IMAGE = `${BASE_URL}/og-image.svg`;
+const OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 interface RouteMeta {
   title: string;
